@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>intake | Infraestructura de preparación para IA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #000000;
+            color: #ededed;
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Gradientes estilo Geist / Vercel */
+        .geist-gradient {
+            background: linear-gradient(180deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .geist-gradient-subtle {
+            background: linear-gradient(180deg, #ffffff 0%, #71717a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Bordes y tarjetas premium */
+        .premium-card {
+            background: linear-gradient(180deg, rgba(24,24,27,0.4) 0%, rgba(24,24,27,0.1) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .premium-card:hover {
+            border-color: rgba(255,255,255,0.2);
+            background: linear-gradient(180deg, rgba(24,24,27,0.6) 0%, rgba(24,24,27,0.2) 100%);
+        }
+
+        /* Efectos de luz sutiles */
+        .glow-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Utilidad para ocultar scrollbars en el código */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-zinc-800 selection:text-white relative">
+
+    <div class="glow-effect top-0"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-black/50 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2 font-semibold text-white">
+                <i data-lucide="square" class="w-5 h-5 text-zinc-400"></i>
+                intake
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+                <a href="#problema" class="hover:text-white transition">El Problema</a>
+                <a href="#como-funciona" class="hover:text-white transition">Cómo Funciona</a>
+                <a href="#filosofia" class="hover:text-white transition">Filosofía</a>
+                <a href="#" class="hover:text-white transition">Docs</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="hidden sm:flex items-center gap-2 text-sm text-zinc-400 hover:text-white transition">
+                    <i data-lucide="github" class="w-4 h-4"></i> Star us
+                </a>
+                <a href="#" class="bg-white text-black text-sm font-medium px-4 py-2 rounded-full hover:bg-zinc-200 transition">
+                    Instalar CLI
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-40 pb-20 px-6 text-center max-w-5xl mx-auto relative z-10">
+        <!-- Headline -->
+        <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tighter mb-8 geist-gradient leading-[1.1]">
+            El motor de traducción <br class="hidden md:block"/> entre tu negocio y la IA.
+        </h1>
+        
+        <!-- Subheadline -->
+        <p class="text-lg md:text-xl text-zinc-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
+            De requisitos caóticos en Jira, Slack y PDFs, a una <strong class="text-zinc-200 font-medium">especificación ejecutable</strong>. 
+            Intake es la infraestructura de preparación que alimenta a tus agentes para que programen sin alucinaciones.
+        </p>
+
+        <!-- CTA & Code snippet -->
+        <div class="flex flex-col items-center gap-6 mb-20">
+            <div class="flex flex-col sm:flex-row justify-center gap-4 w-full">
+                <button class="bg-white text-black font-medium px-8 py-3.5 rounded-full hover:bg-zinc-200 transition flex items-center justify-center gap-2">
+                    <i data-lucide="terminal" class="w-4 h-4"></i> npm install -g @intake/cli
+                </button>
+                <button class="bg-black text-white border border-zinc-800 font-medium px-8 py-3.5 rounded-full hover:bg-zinc-900 transition flex items-center justify-center gap-2">
+                    <i data-lucide="book-open" class="w-4 h-4"></i> Leer la Documentación
+                </button>
+            </div>
+            <p class="text-xs text-zinc-600 font-mono">Compatible con Claude Code, Cursor, Copilot y agentes custom.</p>
+        </div>
+
+        <!-- Visual Diagram (Premium UI) -->
+        <div class="max-w-[1000px] mx-auto premium-card rounded-3xl p-6 md:p-12 relative overflow-hidden shadow-2xl">
+            <!-- Background Grid -->
+            <div class="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+            
+            <!-- Headers Desktop -->
+            <div class="hidden md:flex justify-between w-full text-[11px] text-zinc-500 font-mono uppercase tracking-widest mb-8 relative z-10 px-4">
+                <div class="w-[220px] text-center border-b border-zinc-800 pb-2">Requisitos</div>
+                <div class="flex-1 text-center border-b border-zinc-800 pb-2 mx-8">Preparación</div>
+                <div class="w-[220px] text-center border-b border-zinc-800 pb-2">Implementación</div>
+            </div>
+
+            <!-- Diagram Container -->
+            <div class="relative z-10 flex flex-col md:flex-row items-stretch justify-between w-full gap-12 md:gap-0">
+                
+                <!-- LEFT: Requisitos -->
+                <div class="w-full md:w-[220px] flex flex-col gap-2.5 relative">
+                    <div class="md:hidden text-[11px] text-zinc-500 font-mono uppercase tracking-widest mb-2 border-b border-zinc-800 pb-2 text-center">Requisitos</div>
+                    
+                    <!-- Bus vertical principal izquierdo -->
+                    <div class="hidden md:block absolute top-[19px] bottom-[19px] -right-[30px] w-px bg-zinc-700/50"></div>
+                    <!-- Conector principal hacia el centro -->
+                    <div class="hidden md:block absolute top-1/2 -right-[60px] w-[30px] h-px bg-zinc-500">
+                        <div class="absolute -right-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[4px] border-y-transparent border-l-[5px] border-l-zinc-500"></div>
+                    </div>
+
+                    <!-- Source Items -->
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="trello" class="w-4 h-4 text-[#0052CC]"></i> Jira
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="book" class="w-4 h-4 text-[#172B4D]"></i> Confluence
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="file-text" class="w-4 h-4 text-red-400"></i> PDFs
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="file" class="w-4 h-4 text-[#4285F4]"></i> Google Docs
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="slack" class="w-4 h-4 text-[#E01E5A]"></i> Slack
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="file-code" class="w-4 h-4 text-zinc-400"></i> Markdown
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="image" class="w-4 h-4 text-emerald-400"></i> Imágenes
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <i data-lucide="align-left" class="w-4 h-4 text-zinc-500"></i> Texto libre
+                        <div class="hidden md:block absolute top-1/2 -right-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE: Intake Engine -->
+                <div class="flex-1 flex flex-col items-center justify-center relative w-full px-4 md:px-0 py-8 md:py-0">
+                    <!-- Flecha hacia abajo para móvil -->
+                    <div class="md:hidden w-px h-8 bg-zinc-700 mx-auto mb-4 relative">
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0 border-x-[4px] border-x-transparent border-t-[5px] border-t-zinc-700"></div>
+                    </div>
+
+                    <!-- Caja Intake Premium -->
+                    <div class="relative group z-20 w-full max-w-[240px]">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-zinc-500/20 via-zinc-400/20 to-zinc-500/20 rounded-2xl blur-xl group-hover:blur-2xl transition duration-500"></div>
+                        <div class="relative bg-black border border-zinc-700 p-6 rounded-2xl flex flex-col items-center shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+                            <!-- Glow interior -->
+                            <div class="absolute top-0 w-32 h-px bg-gradient-to-r from-transparent via-zinc-400 to-transparent opacity-50"></div>
+                            
+                            <div class="bg-zinc-900 border border-zinc-800 w-12 h-12 rounded-xl flex items-center justify-center mb-4 shadow-inner">
+                                <i data-lucide="square" class="w-6 h-6 text-white"></i>
+                            </div>
+                            
+                            <h3 class="text-xl font-bold tracking-tight text-white mb-1">intake</h3>
+                            <p class="text-[10px] text-zinc-500 font-mono uppercase tracking-widest text-center">Core Engine</p>
+                        </div>
+                    </div>
+
+                    <!-- Flecha hacia abajo para móvil -->
+                    <div class="md:hidden w-px h-8 bg-emerald-700/50 mx-auto mt-4 relative">
+                        <div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0 border-x-[4px] border-x-transparent border-t-[5px] border-t-emerald-700/50"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Implementación -->
+                <div class="w-full md:w-[220px] flex flex-col gap-2.5 relative">
+                    <div class="md:hidden text-[11px] text-zinc-500 font-mono uppercase tracking-widest mb-2 border-b border-zinc-800 pb-2 text-center mt-4">Implementación</div>
+                    
+                    <!-- Bus vertical principal derecho -->
+                    <div class="hidden md:block absolute top-[19px] bottom-[19px] -left-[30px] w-px bg-zinc-700/50"></div>
+                    
+                    <!-- Conector principal desde el centro -->
+                    <div class="hidden md:block absolute top-1/2 -left-[60px] w-[30px] h-px bg-emerald-500/60"></div>
+                    
+                    <!-- Etiqueta SPEC en el conector -->
+                    <div class="hidden md:block absolute top-1/2 -left-[60px] -translate-y-1/2 bg-zinc-950 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono px-2 py-0.5 rounded shadow-[0_0_10px_rgba(16,185,129,0.1)] z-30 transform -translate-x-1/2">
+                        spec.yaml
+                    </div>
+
+                    <!-- Implementation Items -->
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="bot" class="w-4 h-4 text-[#D97757]"></i> Claude Code
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="terminal" class="w-4 h-4 text-white"></i> Cursor
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="terminal-square" class="w-4 h-4 text-purple-400"></i> Copilot CLI
+                    </div>
+                    
+                    <!-- Kiro (Highlighted Output) -->
+                    <div class="relative bg-zinc-800/80 border border-zinc-600 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-white font-semibold shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-500"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[4px] border-y-transparent border-l-[5px] border-l-zinc-500 z-10"></div>
+                        <i data-lucide="cpu" class="w-4 h-4 text-emerald-400"></i> Kiro
+                    </div>
+
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="boxes" class="w-4 h-4 text-blue-400"></i> architect
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="layout" class="w-4 h-4 text-pink-400"></i> Copilot Workspace
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i> Agentes custom
+                    </div>
+                    <div class="relative bg-zinc-900/80 border border-zinc-800/80 rounded-lg px-3 py-2 flex items-center gap-3 text-xs text-zinc-300 font-medium hover:bg-zinc-800/50 transition-colors shadow-sm">
+                        <div class="hidden md:block absolute top-1/2 -left-[30px] w-[30px] h-px bg-zinc-700/50"></div>
+                        <div class="hidden md:block absolute -left-1 top-1/2 -translate-y-1/2 w-0 h-0 border-y-[3.5px] border-y-transparent border-l-[4px] border-l-zinc-700/50 z-10"></div>
+                        <i data-lucide="user" class="w-4 h-4 text-zinc-400"></i> Desarrollo manual
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Logo Cloud / Sources -->
+    <section class="py-10 border-y border-white/5 bg-zinc-950/30">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <p class="text-xs font-semibold text-zinc-500 uppercase tracking-widest mb-8">Unifica el caos desde cualquier formato</p>
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale">
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="trello"></i> Jira</div>
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="book"></i> Confluence</div>
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="slack"></i> Slack</div>
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="file-text"></i> PDF / Docs</div>
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="figma"></i> Figma</div>
+                <div class="flex items-center gap-2 text-xl font-bold font-mono"><i data-lucide="github"></i> Markdown</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem Section -->
+    <section id="problema" class="py-32 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 geist-gradient">El Cuello de Botella Humano.</h2>
+            <p class="text-lg text-zinc-400 max-w-2xl mx-auto">
+                No existe un estándar universal para los requisitos en las empresas. La realidad es multi-formato, multi-fuente y frecuentemente contradictoria.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-stretch">
+            <!-- Bad Way -->
+            <div class="premium-card p-10 rounded-2xl relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-red-500/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                    <i data-lucide="x-circle" class="text-zinc-500"></i>
+                    El desarrollador como traductor
+                </h3>
+                <p class="text-zinc-400 mb-8 leading-relaxed">
+                    Actualmente, te sientas frente a Claude o Cursor y actúas como puente. Lees de 5 fuentes distintas, sintetizas e intentas explicarle a la IA qué hacer.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3 text-sm text-zinc-500">
+                        <i data-lucide="clock" class="w-5 h-5 shrink-0"></i>
+                        <span><strong>Lento y manual:</strong> Digerir información dispersa consume horas de tu tiempo.</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-zinc-500">
+                        <i data-lucide="alert-triangle" class="w-5 h-5 shrink-0"></i>
+                        <span><strong>Propenso a errores:</strong> Se pierde contexto vital entre Slack, el PM y el código.</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-zinc-500">
+                        <i data-lucide="ghost" class="w-5 h-5 shrink-0"></i>
+                        <span><strong>Alucinaciones:</strong> La IA asume lo que no sabe, creando bugs difíciles de rastrear.</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Good Way -->
+            <div class="premium-card p-10 rounded-2xl relative overflow-hidden group border-white/20">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+                <h3 class="text-2xl font-bold text-white mb-4 flex items-center gap-3">
+                    <i data-lucide="check-circle-2" class="text-white"></i>
+                    Infraestructura de Admisión
+                </h3>
+                <p class="text-zinc-400 mb-8 leading-relaxed">
+                    Intake automatiza la digestión de requisitos. Genera una <strong class="text-white">Spec ejecutable y verificable</strong> que cualquier agente puede consumir a la perfección.
+                </p>
+                <ul class="space-y-4">
+                    <li class="flex items-start gap-3 text-sm text-zinc-300">
+                        <i data-lucide="zap" class="w-5 h-5 shrink-0 text-zinc-100"></i>
+                        <span><strong>Automatizado:</strong> Un solo comando procesa y cruza todas las fuentes.</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-zinc-300">
+                        <i data-lucide="shield-check" class="w-5 h-5 shrink-0 text-zinc-100"></i>
+                        <span><strong>Deduplicación:</strong> Detecta contradicciones entre diseño y backend al instante.</span>
+                    </li>
+                    <li class="flex items-start gap-3 text-sm text-zinc-300">
+                        <i data-lucide="git-commit" class="w-5 h-5 shrink-0 text-zinc-100"></i>
+                        <span><strong>Trazabilidad:</strong> Cada línea de código generada se mapea al requisito original.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Metaphor (Philosophical Break) -->
+    <section id="filosofia" class="py-24 border-y border-white/5 bg-zinc-900/10 relative overflow-hidden">
+        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-zinc-800/20 blur-[100px] rounded-full pointer-events-none"></div>
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
+            <i data-lucide="activity" class="w-12 h-12 text-zinc-500 mx-auto mb-8"></i>
+            <h2 class="text-3xl md:text-4xl font-semibold mb-8 text-white">Si el desarrollo con IA fuera un hospital...</h2>
+            <blockquote class="text-xl md:text-2xl font-light text-zinc-400 leading-relaxed italic">
+                "Los agentes de IA son los <strong class="text-white font-medium not-italic">cirujanos</strong> que operan. 
+                Pero antes de entrar a quirófano, alguien debe recoger el historial del paciente de 5 médicos distintos, detectar alergias y normalizar la información. <br><br>
+                Ese proceso de admisión es <strong class="text-white font-medium not-italic">intake</strong>. Sin él, el cirujano opera a ciegas."
+            </blockquote>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="como-funciona" class="py-32 px-6 max-w-6xl mx-auto">
+        <div class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-6 geist-gradient">Construido para el flujo de trabajo moderno.</h2>
+            <p class="text-lg text-zinc-400 max-w-2xl mx-auto">
+                No compite con tus herramientas de IA favoritas. Las hace funcionar de verdad.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-6">
+            <!-- Feature 1 -->
+            <div class="premium-card p-8 rounded-xl flex flex-col">
+                <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6">
+                    <i data-lucide="layers" class="w-6 h-6 text-zinc-300"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Ingesta Universal</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed flex-grow">
+                    Acepta inputs de cualquier lugar: historias de usuario con ACs incompletos, hilos de decisiones en Slack, PDFs legales o simples notas en un Google Doc.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="premium-card p-8 rounded-xl flex flex-col">
+                <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6">
+                    <i data-lucide="cpu" class="w-6 h-6 text-zinc-300"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Agnóstico de Agentes</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed flex-grow">
+                    No te atamos a un IDE. Intake genera una salida estándar (YAML/Markdown estructurado) que Cursor, GitHub Copilot, Kiro o tus agentes custom pueden leer.
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="premium-card p-8 rounded-xl flex flex-col">
+                <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6">
+                    <i data-lucide="check-square" class="w-6 h-6 text-zinc-300"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Verificación Continua</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed flex-grow">
+                    El ciclo no termina en la generación. Intake provee mecanismos para verificar automáticamente si el código producido por la IA cumple con la spec original.
+                </p>
+            </div>
+
+            <!-- Feature 4 -->
+            <div class="premium-card p-8 rounded-xl flex flex-col md:col-span-3 lg:col-span-2">
+                <div class="w-12 h-12 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center mb-6">
+                    <i data-lucide="network" class="w-6 h-6 text-zinc-300"></i>
+                </div>
+                <h3 class="text-xl font-semibold text-white mb-3">Detección de Conflictos & Trazabilidad</h3>
+                <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                    Si el PM pide Auth con OAuth2 en Jira, pero el Tech Lead decidió usar JWT en un hilo de Slack, Intake detecta la anomalía durante la fase de preparación y te alerta antes de gastar tokens o generar código erróneo. Además, mantiene un link directo a la fuente original para cada decisión.
+                </p>
+            </div>
+
+            <!-- Feature 5 -->
+            <div class="premium-card p-8 rounded-xl flex flex-col md:col-span-3 lg:col-span-1 bg-white/5">
+                <h3 class="text-xl font-semibold text-white mb-4">¿Para quién es?</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-3 text-sm text-zinc-400 border-b border-white/5 pb-2">
+                        <i data-lucide="users" class="w-4 h-4 text-zinc-500"></i> Equipos de Desarrollo
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-400 border-b border-white/5 pb-2">
+                        <i data-lucide="user" class="w-4 h-4 text-zinc-500"></i> Devs Freelance
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-400 border-b border-white/5 pb-2">
+                        <i data-lucide="terminal-square" class="w-4 h-4 text-zinc-500"></i> Equipos DevOps
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-zinc-400">
+                        <i data-lucide="building" class="w-4 h-4 text-zinc-500"></i> Agencias / Consultoras
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <section class="py-32 px-6 max-w-4xl mx-auto text-center border-t border-white/5">
+        <h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-8 text-white">
+            Prepara tus proyectos para la automatización total.
+        </h2>
+        <p class="text-lg text-zinc-400 mb-10 max-w-2xl mx-auto">
+            Intake es open source y está listo para integrarse en tu flujo de trabajo local o pipelines de CI/CD hoy mismo.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <button class="bg-white text-black font-medium px-8 py-3.5 rounded-full hover:bg-zinc-200 transition">
+                Ver Repositorio en GitHub
+            </button>
+            <button class="bg-transparent text-white border border-zinc-700 font-medium px-8 py-3.5 rounded-full hover:bg-zinc-900 transition">
+                Leer la Documentación
+            </button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 py-12 px-6 mt-auto">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2 font-semibold text-white">
+                <i data-lucide="square" class="w-5 h-5 text-zinc-400"></i>
+                intake
+            </div>
+            <div class="text-sm text-zinc-500">
+                Construido como puente universal entre humanos e IA. Open Source.
+            </div>
+            <div class="flex gap-6 text-sm font-medium text-zinc-500">
+                <a href="#" class="hover:text-white transition">GitHub</a>
+                <a href="#" class="hover:text-white transition">Twitter / X</a>
+                <a href="#" class="hover:text-white transition">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializar iconos de Lucide
+        lucide.createIcons();
+    </script>
+</body>
+</html>
