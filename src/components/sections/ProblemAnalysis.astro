@@ -1,0 +1,253 @@
+---
+import { t } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<section id="problema" class="problem-section">
+  <div class="problem-header">
+    <h2 class="problem-title">{t('problem.title', lang)}</h2>
+    <p class="problem-subtitle">{t('problem.subtitle', lang)}</p>
+  </div>
+
+  <div class="problem-grid">
+    <!-- Failure State -->
+    <div class="problem-card fail-card tech-border hatch-pattern-dark">
+      <div class="card-badge badge-fail">{t('problem.failState', lang)}</div>
+
+      <h3 class="card-title tech-border-white">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#C0392B" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" /><line x1="9" y1="9" x2="15" y2="15" /><line x1="15" y1="9" x2="9" y2="15" />
+        </svg>
+        {t('problem.failTitle', lang)}
+      </h3>
+
+      <div class="card-body tech-border">
+        <p class="card-desc">{t('problem.failDesc', lang)}</p>
+        <ul class="card-list">
+          <li class="card-list-item">
+            <div class="list-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+            </div>
+            <div>
+              <strong class="item-title">{t('problem.failItem1Title', lang)}</strong>
+              <span class="item-desc">{t('problem.failItem1Desc', lang)}</span>
+            </div>
+          </li>
+          <li class="card-list-item">
+            <div class="list-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /><line x1="12" y1="9" x2="12" y2="13" /><line x1="12" y1="17" x2="12.01" y2="17" /></svg>
+            </div>
+            <div>
+              <strong class="item-title">{t('problem.failItem2Title', lang)}</strong>
+              <span class="item-desc">{t('problem.failItem2Desc', lang)}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Optimal State -->
+    <div class="problem-card optimal-card tech-border-brick tech-shadow-brick">
+      <div class="card-badge badge-optimal">{t('problem.optimalState', lang)}</div>
+
+      <h3 class="card-title tech-border-white">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" /><polyline points="9 11 12 14 22 4" />
+        </svg>
+        {t('problem.optimalTitle', lang)}
+      </h3>
+
+      <div class="card-body-optimal tech-border tech-shadow">
+        <p class="card-desc">{t('problem.optimalDesc', lang)}</p>
+        <ul class="card-list">
+          <li class="card-list-item">
+            <div class="list-icon-brick">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" /></svg>
+            </div>
+            <div>
+              <strong class="item-title">{t('problem.optimalItem1Title', lang)}</strong>
+              <span class="item-desc">{t('problem.optimalItem1Desc', lang)}</span>
+            </div>
+          </li>
+          <li class="card-list-item">
+            <div class="list-icon-brick">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><polyline points="9 12 12 15 16 10" /></svg>
+            </div>
+            <div>
+              <strong class="item-title">{t('problem.optimalItem2Title', lang)}</strong>
+              <span class="item-desc">{t('problem.optimalItem2Desc', lang)}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .problem-section {
+    padding: 6rem 1.5rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .problem-header {
+    margin-bottom: 4rem;
+    border-left: 4px solid var(--brick);
+    padding-left: 1.5rem;
+  }
+
+  .problem-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .problem-subtitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #a1a1aa;
+    max-width: 40rem;
+  }
+
+  .problem-grid {
+    display: grid;
+    gap: 3rem;
+  }
+
+  .problem-card {
+    background: var(--blueprint-paper);
+    padding: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .optimal-card {
+    background: var(--blueprint-bg);
+  }
+
+  .card-badge {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+    border-left: 2px solid;
+    border-bottom: 2px solid;
+  }
+
+  .badge-fail {
+    background: #27272a;
+    color: white;
+    border-color: #52525b;
+  }
+
+  .badge-optimal {
+    background: var(--brick);
+    color: white;
+    border-color: white;
+  }
+
+  .card-title {
+    font-size: 1.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: #111;
+    padding: 0.5rem;
+    width: fit-content;
+    margin-bottom: 1.5rem;
+    color: white;
+  }
+
+  .card-body,
+  .card-body-optimal {
+    background: var(--blueprint-bg);
+    padding: 1.5rem;
+    flex: 1;
+  }
+
+  .card-body-optimal {
+    background: var(--blueprint-paper);
+    border-color: #3f3f46;
+  }
+
+  .card-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    line-height: 1.7;
+    color: #d4d4d8;
+    margin-bottom: 2rem;
+  }
+
+  .card-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .card-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .list-icon {
+    background: #27272a;
+    padding: 0.5rem;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .list-icon-brick {
+    background: var(--brick);
+    padding: 0.5rem;
+    color: white;
+    border: 1px solid white;
+    flex-shrink: 0;
+  }
+
+  .item-title {
+    display: block;
+    font-weight: 900;
+    text-transform: uppercase;
+    border-bottom: 1px solid #3f3f46;
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.25rem;
+    color: white;
+  }
+
+  .item-desc {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #a1a1aa;
+  }
+
+  @media (min-width: 768px) {
+    .problem-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .problem-card {
+      padding: 2.5rem;
+    }
+  }
+</style>

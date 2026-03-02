@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTAKE | Plano Técnico del Motor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;500;700;800&display=swap');
+        
+        :root {
+            --blueprint-bg: #050505;
+            --blueprint-paper: #0a0a0a;
+            --ink-white: #ededed;
+            --grid-line: #1f1f22;
+            --brick: #C0392B;
+            --zinc-border: #3f3f46;
+        }
+
+        body { 
+            font-family: 'Space Grotesk', sans-serif; 
+            background-color: var(--blueprint-bg);
+            color: var(--ink-white);
+        }
+        
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Cuadrícula de Plano Técnico (Dark) */
+        .blueprint-grid {
+            background-size: 40px 40px;
+            background-image:
+                linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+        }
+
+        /* Patrón de Sombreado (Hatch) Oscuro */
+        .hatch-pattern-dark {
+            background-image: repeating-linear-gradient(
+                45deg, 
+                transparent, 
+                transparent 5px, 
+                rgba(255, 255, 255, 0.05) 5px, 
+                rgba(255, 255, 255, 0.05) 6px
+            );
+        }
+
+        /* Bordes Marcados */
+        .tech-border {
+            border: 2px solid var(--zinc-border);
+        }
+        
+        .tech-border-white {
+            border: 2px solid var(--ink-white);
+        }
+
+        .tech-border-brick {
+            border: 2px solid var(--brick);
+        }
+
+        /* Sombras Sólidas Oscuras/Ladrillo */
+        .tech-shadow {
+            box-shadow: 6px 6px 0px 0px var(--zinc-border);
+            transition: all 0.15s ease;
+        }
+        
+        .tech-shadow-brick {
+            box-shadow: 6px 6px 0px 0px var(--brick);
+            transition: all 0.15s ease;
+        }
+
+        /* Interacciones mecánicas */
+        .tech-button:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0px 0px var(--zinc-border);
+        }
+        .tech-button:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0px 0px 0px 0px var(--zinc-border);
+        }
+
+        .tech-button-brick:hover {
+            transform: translate(2px, 2px);
+            box-shadow: 4px 4px 0px 0px var(--brick);
+        }
+        .tech-button-brick:active {
+            transform: translate(6px, 6px);
+            box-shadow: 0px 0px 0px 0px var(--brick);
+        }
+
+        /* Marcas de corte (Crop marks) */
+        .crop-mark {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-color: var(--zinc-border);
+        }
+        .crop-tl { top: -2px; left: -2px; border-top: 2px solid; border-left: 2px solid; }
+        .crop-tr { top: -2px; right: -2px; border-top: 2px solid; border-right: 2px solid; }
+        .crop-bl { bottom: -2px; left: -2px; border-bottom: 2px solid; border-left: 2px solid; }
+        .crop-br { bottom: -2px; right: -2px; border-bottom: 2px solid; border-right: 2px solid; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-[#C0392B] selection:text-white blueprint-grid">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-[#0a0a0a] border-b-2 border-[#3f3f46]">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3 font-bold text-white font-mono text-xl tracking-tighter uppercase">
+                <i data-lucide="square" class="w-6 h-6 stroke-[2px] text-white"></i>
+                INTAKE
+            </div>
+            <div class="hidden md:flex items-center gap-8 text-sm font-bold uppercase tracking-widest text-zinc-400">
+                <a href="#problema" class="hover:text-white hover:bg-zinc-800 px-2 py-1 transition-colors">DIAGNÓSTICO</a>
+                <a href="#como-funciona" class="hover:text-white hover:bg-zinc-800 px-2 py-1 transition-colors">ESPECIFICACIONES</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="#" class="bg-white text-black text-sm font-bold uppercase tracking-widest px-5 py-2 hover:bg-zinc-300 transition-colors tech-border-white">
+                    [ CLI_INSTALL ]
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header / Title Block (Cajetín de plano) -->
+    <header class="pt-32 pb-16 px-6 max-w-7xl mx-auto w-full">
+        <div class="tech-border bg-[#0a0a0a] p-2 relative">
+            <div class="crop-mark crop-tl"></div><div class="crop-mark crop-tr"></div>
+            <div class="crop-mark crop-bl"></div><div class="crop-mark crop-br"></div>
+            
+            <div class="border-2 border-dashed border-[#3f3f46] p-8 md:p-16 flex flex-col items-center text-center hatch-pattern-dark relative overflow-hidden">
+                
+                <div class="bg-[#050505] tech-border-white text-white px-4 py-1 font-mono text-xs font-bold mb-8 uppercase tracking-widest inline-flex items-center gap-2 relative z-10">
+                    <span class="w-2 h-2 bg-[#C0392B] rounded-none animate-pulse"></span> Doc. Ref: INT-001
+                </div>
+
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter mb-6 bg-[#0a0a0a] inline-block px-4 tech-border-white text-white relative z-10">
+                    Estructura <br class="hidden md:block"/> El Caos.
+                </h1>
+                
+                <div class="bg-[#050505] tech-border border-zinc-700 p-6 max-w-3xl mx-auto mb-10 tech-shadow relative z-10">
+                    <p class="text-lg md:text-xl font-mono font-medium leading-relaxed text-zinc-300">
+                        > EL MOTOR DE TRADUCCIÓN ENTRE TU NEGOCIO Y LA IA. <br><br>
+                        De requisitos en bruto (Jira, Slack, PDFs) a una especificación ejecutable. Infraestructura de preparación analógica-digital para agentes.
+                    </p>
+                </div>
+
+                <!-- Botones / Acciones -->
+                <div class="flex flex-col sm:flex-row justify-center gap-6 w-full relative z-10">
+                    <button class="bg-[#C0392B] text-white font-mono font-bold uppercase tracking-widest px-8 py-4 tech-border-brick tech-shadow-brick tech-button-brick flex items-center justify-center gap-3 text-lg">
+                        <i data-lucide="terminal" class="w-5 h-5"></i> npm i -g @intake
+                    </button>
+                    <button class="bg-[#111] text-white font-mono font-bold uppercase tracking-widest px-8 py-4 tech-border-white tech-shadow tech-button flex items-center justify-center gap-3 text-lg">
+                        <i data-lucide="book-open" class="w-5 h-5"></i> Leer Manual
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Visual Diagram (Plano Técnico Oscuro) -->
+    <section class="px-6 pb-20 max-w-7xl mx-auto w-full relative z-10">
+        <div class="bg-[#0a0a0a] tech-border p-8 md:p-12 relative overflow-hidden tech-shadow">
+            
+            <!-- Grid de fondo del plano -->
+            <div class="absolute inset-0 blueprint-grid opacity-30 pointer-events-none"></div>
+            
+            <!-- Títulos del diagrama -->
+            <div class="hidden md:flex justify-between w-full font-mono text-sm font-bold uppercase tracking-widest mb-10 relative z-10 border-b-2 border-zinc-700 pb-4 text-zinc-400">
+                <div class="w-[250px] pl-2 border-l-4 border-zinc-600">Fase 1: Recolección</div>
+                <div class="flex-1 text-center text-white font-black">Fase 2: Procesamiento</div>
+                <div class="w-[250px] text-right pr-2 border-r-4 border-[#C0392B]">Fase 3: Ejecución</div>
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-stretch justify-between w-full gap-8 md:gap-0">
+                
+                <!-- LEFT: Fuentes (Requisitos) -->
+                <div class="w-full md:w-[250px] flex flex-col gap-4 relative">
+                    <div class="md:hidden font-mono text-sm font-bold uppercase tracking-widest mb-2 border-b-2 border-zinc-700 pb-2 text-center text-zinc-400">Fase 1: Recolección</div>
+                    
+                    <!-- Bus Vertical Analógico -->
+                    <div class="hidden md:block absolute top-6 bottom-6 -right-[40px] w-[2px] bg-zinc-600"></div>
+                    
+                    <!-- Items de origen -->
+                    <div class="bg-[#111] tech-border p-3 flex items-center gap-3 font-mono text-sm font-bold relative z-20 hover:border-white hover:text-white transition-colors cursor-crosshair text-zinc-300">
+                        <i data-lucide="trello" class="w-5 h-5 text-blue-400"></i> JIRA_TICKET
+                        <div class="hidden md:block absolute top-1/2 -right-[40px] w-[40px] h-[2px] bg-zinc-600"></div>
+                    </div>
+                    <div class="bg-[#111] tech-border p-3 flex items-center gap-3 font-mono text-sm font-bold relative z-20 hover:border-white hover:text-white transition-colors cursor-crosshair text-zinc-300">
+                        <i data-lucide="book" class="w-5 h-5 text-blue-300"></i> CONFLUENCE_DOC
+                        <div class="hidden md:block absolute top-1/2 -right-[40px] w-[40px] h-[2px] bg-zinc-600"></div>
+                    </div>
+                    <div class="bg-[#111] tech-border p-3 flex items-center gap-3 font-mono text-sm font-bold relative z-20 hover:border-[#C0392B] hover:text-[#C0392B] transition-colors cursor-crosshair text-zinc-300">
+                        <i data-lucide="file-text" class="w-5 h-5 text-[#C0392B]"></i> CLIENT_PDF
+                        <div class="hidden md:block absolute top-1/2 -right-[40px] w-[40px] h-[2px] bg-zinc-600"></div>
+                    </div>
+                    <div class="bg-[#111] tech-border p-3 flex items-center gap-3 font-mono text-sm font-bold relative z-20 hover:border-white hover:text-white transition-colors cursor-crosshair text-zinc-300">
+                        <i data-lucide="slack" class="w-5 h-5 text-purple-400"></i> SLACK_THREAD
+                        <div class="hidden md:block absolute top-1/2 -right-[40px] w-[40px] h-[2px] bg-zinc-600"></div>
+                    </div>
+                </div>
+
+                <!-- MIDDLE: Intake Engine -->
+                <div class="flex-1 flex flex-col items-center justify-center relative w-full px-4 md:px-0 py-8 md:py-0">
+                    <!-- Conector principal IN (SVG ortogonal) -->
+                    <svg class="hidden md:block absolute inset-0 w-full h-full pointer-events-none" style="z-index: 1;">
+                        <!-- Entrada -->
+                        <path d="M 0 50% L 35% 50%" fill="none" stroke="#52525b" stroke-width="2" />
+                        <!-- Triángulo de dirección -->
+                        <polygon points="35%,48% 35%,52% 38%,50%" fill="#52525b" />
+                        
+                        <!-- Salida -->
+                        <path d="M 65% 50% L 100% 50%" fill="none" stroke="#C0392B" stroke-width="2" stroke-dasharray="6 3" />
+                        <!-- Triángulo de dirección -->
+                        <polygon points="97%,48% 97%,52% 100%,50%" fill="#C0392B" />
+                    </svg>
+
+                    <!-- Caja de Procesamiento -->
+                    <div class="relative z-20 w-full max-w-[280px]">
+                        <div class="bg-[#050505] tech-border-white p-6 flex flex-col items-center tech-shadow relative">
+                            <!-- Patrón interior -->
+                            <div class="absolute inset-0 hatch-pattern-dark opacity-50"></div>
+                            
+                            <div class="bg-[#111] border-2 border-white w-16 h-16 flex items-center justify-center mb-6 relative z-10 shadow-[4px_4px_0_0_#ededed]">
+                                <i data-lucide="square" class="w-8 h-8 text-white stroke-[2px]"></i>
+                            </div>
+                            
+                            <h3 class="text-3xl font-black uppercase tracking-widest text-white mb-2 relative z-10">INTAKE</h3>
+                            <div class="bg-zinc-800 text-white font-mono text-xs font-bold px-3 py-1 border border-zinc-500 relative z-10">
+                                MOT_ADMISIÓN_V1
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Implementación -->
+                <div class="w-full md:w-[250px] flex flex-col gap-4 relative">
+                    <div class="md:hidden font-mono text-sm font-bold uppercase tracking-widest mb-2 border-b-2 border-zinc-700 pb-2 text-center text-zinc-400 mt-6">Fase 3: Ejecución</div>
+                    
+                    <!-- Bus Vertical Derecho -->
+                    <div class="hidden md:block absolute top-6 bottom-6 -left-[40px] w-[2px] bg-[#C0392B]"></div>
+                    
+                    <!-- Etiqueta sobre el conector -->
+                    <div class="hidden md:block absolute top-1/2 -left-[100px] -translate-y-1/2 bg-[#050505] tech-border-brick text-[#C0392B] font-mono font-bold text-xs px-2 py-1 z-30 transform -translate-x-1/2 tech-shadow-brick">
+                        SPEC.YAML
+                    </div>
+
+                    <!-- Items de destino -->
+                    <div class="bg-[#111] tech-border p-3 flex items-center justify-end gap-3 font-mono text-sm font-bold relative z-20 hover:border-[#C0392B] hover:text-[#C0392B] transition-colors cursor-crosshair text-zinc-300">
+                        <div class="hidden md:block absolute top-1/2 -left-[40px] w-[40px] h-[2px] bg-[#C0392B]"></div>
+                        CLAUDE_CODE <i data-lucide="bot" class="w-5 h-5"></i>
+                    </div>
+                    <div class="bg-white text-black tech-border-white p-3 flex items-center justify-end gap-3 font-mono text-sm font-bold relative z-20 tech-shadow cursor-crosshair">
+                        <div class="hidden md:block absolute top-1/2 -left-[40px] w-[40px] h-[2px] bg-[#C0392B]"></div>
+                        CURSOR_IDE <i data-lucide="terminal" class="w-5 h-5"></i>
+                    </div>
+                    <div class="bg-[#111] tech-border p-3 flex items-center justify-end gap-3 font-mono text-sm font-bold relative z-20 hover:border-[#C0392B] hover:text-[#C0392B] transition-colors cursor-crosshair text-zinc-300">
+                        <div class="hidden md:block absolute top-1/2 -left-[40px] w-[40px] h-[2px] bg-[#C0392B]"></div>
+                        COPILOT_CLI <i data-lucide="terminal-square" class="w-5 h-5"></i>
+                    </div>
+                    <div class="bg-[#111] tech-border p-3 flex items-center justify-end gap-3 font-mono text-sm font-bold relative z-20 hover:border-[#C0392B] hover:text-[#C0392B] transition-colors cursor-crosshair text-zinc-300">
+                        <div class="hidden md:block absolute top-1/2 -left-[40px] w-[40px] h-[2px] bg-[#C0392B]"></div>
+                        CUSTOM_AGENTS <i data-lucide="cpu" class="w-5 h-5"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logo Grid (Tabla Técnica) -->
+    <section class="border-y-2 border-zinc-700 bg-[#0a0a0a]">
+        <div class="max-w-7xl mx-auto flex flex-wrap md:grid md:grid-cols-6 divide-y-2 md:divide-y-0 md:divide-x-2 divide-zinc-700">
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i data-lucide="trello" class="mr-2"></i> Jira
+            </div>
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i data-lucide="book" class="mr-2"></i> Confluence
+            </div>
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase transition-colors bg-[#C0392B] text-white">
+                <i data-lucide="file-text" class="mr-2"></i> Documentos
+            </div>
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i data-lucide="slack" class="mr-2"></i> Slack
+            </div>
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i data-lucide="figma" class="mr-2"></i> Figma
+            </div>
+            <div class="w-full md:w-auto p-6 flex items-center justify-center font-mono font-bold text-sm tracking-widest uppercase hover:bg-zinc-800 transition-colors text-zinc-400 hover:text-white">
+                <i data-lucide="github" class="mr-2"></i> Markdown
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem Section (Diagnóstico vs Proyecto) -->
+    <section id="problema" class="py-24 px-6 max-w-7xl mx-auto w-full">
+        <div class="mb-16 border-l-4 border-[#C0392B] pl-6">
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-4 text-white">Análisis Estructural</h2>
+            <p class="text-xl font-mono font-medium max-w-2xl text-zinc-400">
+                El cuello de botella humano en el desarrollo impulsado por Inteligencia Artificial.
+            </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 items-stretch">
+            <!-- Bad Way -->
+            <div class="bg-[#0a0a0a] tech-border p-8 md:p-10 relative flex flex-col hatch-pattern-dark">
+                <div class="absolute top-0 right-0 bg-zinc-800 text-white font-mono font-bold px-4 py-2 border-l-2 border-b-2 border-zinc-600">
+                    ESTADO: FALLA
+                </div>
+                
+                <h3 class="text-2xl font-black uppercase mb-6 flex items-center gap-3 bg-[#111] inline-flex w-max p-2 tech-border-white">
+                    <i data-lucide="x-square" class="w-8 h-8 text-[#C0392B]"></i>
+                    Traducción Manual
+                </h3>
+                
+                <div class="bg-[#050505] tech-border p-6 flex-1">
+                    <p class="font-mono text-sm mb-8 leading-relaxed font-bold text-zinc-300">
+                        Te sientas frente al agente y actúas como puente. Lees de múltiples fuentes, sintetizas e intentas explicar el contexto.
+                    </p>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-zinc-800 p-2 text-white"><i data-lucide="clock" class="w-5 h-5"></i></div>
+                            <div>
+                                <span class="font-black uppercase block border-b border-zinc-700 mb-1 text-white">Carga Operativa Alta</span>
+                                <span class="font-mono text-sm text-zinc-400">Digerir información dispersa consume horas.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-zinc-800 p-2 text-white"><i data-lucide="alert-triangle" class="w-5 h-5"></i></div>
+                            <div>
+                                <span class="font-black uppercase block border-b border-zinc-700 mb-1 text-white">Pérdida de Contexto</span>
+                                <span class="font-mono text-sm text-zinc-400">Contradicciones entre el PM y el Tech Lead se ignoran.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Good Way -->
+            <div class="bg-[#050505] tech-border-brick p-8 md:p-10 relative flex flex-col tech-shadow-brick">
+                <div class="absolute top-0 right-0 bg-[#C0392B] text-white font-mono font-bold px-4 py-2 border-l-2 border-b-2 border-white">
+                    ESTADO: ÓPTIMO
+                </div>
+                
+                <h3 class="text-2xl font-black uppercase mb-6 flex items-center gap-3 bg-[#111] text-white inline-flex w-max p-2 tech-border-white">
+                    <i data-lucide="check-square" class="w-8 h-8 text-white"></i>
+                    Infraestructura Intake
+                </h3>
+                
+                <div class="bg-[#0a0a0a] tech-border border-zinc-700 p-6 flex-1 tech-shadow">
+                    <p class="font-mono text-sm mb-8 leading-relaxed font-bold text-zinc-300">
+                        Intake automatiza la digestión. Genera una Spec ejecutable y verificable lista para consumo directo.
+                    </p>
+                    <ul class="space-y-6">
+                        <li class="flex items-start gap-4">
+                            <div class="bg-[#C0392B] p-2 text-white border border-white"><i data-lucide="zap" class="w-5 h-5"></i></div>
+                            <div>
+                                <span class="font-black uppercase block border-b border-zinc-700 mb-1 text-white">Consolidación Automática</span>
+                                <span class="font-mono text-sm text-zinc-400">Un solo comando procesa y cruza todas las fuentes.</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-4">
+                            <div class="bg-[#C0392B] p-2 text-white border border-white"><i data-lucide="shield-check" class="w-5 h-5"></i></div>
+                            <div>
+                                <span class="font-black uppercase block border-b border-zinc-700 mb-1 text-white">Deduplicación Estricta</span>
+                                <span class="font-mono text-sm text-zinc-400">Detección de contradicciones antes de escribir código.</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Metaphor (Nota al margen) -->
+    <section class="py-12 px-6 max-w-5xl mx-auto w-full">
+        <div class="bg-[#0a0a0a] tech-border p-8 md:p-12 relative">
+            <div class="absolute -top-4 -left-4 bg-[#C0392B] text-white font-mono text-xs font-bold px-3 py-1 uppercase tracking-widest border border-white">
+                Nota de Arquitectura #042
+            </div>
+            
+            <i data-lucide="quote" class="w-12 h-12 text-[#3f3f46] mb-6 fill-current"></i>
+            
+            <blockquote class="text-2xl md:text-3xl font-bold uppercase tracking-tight leading-tight border-l-4 border-zinc-600 pl-6 mb-6 text-white">
+                "Los agentes de IA son los cirujanos que operan. 
+                <span class="text-[#C0392B]">Pero alguien debe recoger el historial de 5 médicos distintos y detectar alergias.</span>"
+            </blockquote>
+            
+            <p class="font-mono font-bold text-lg text-zinc-400">
+                >> Ese proceso de admisión es INTAKE. Sin él, el agente opera a ciegas.
+            </p>
+        </div>
+    </section>
+
+    <!-- Features Grid (Especificaciones Técnicas) -->
+    <section id="como-funciona" class="py-24 px-6 max-w-7xl mx-auto w-full">
+        <div class="mb-16 border-b-4 border-zinc-700 pb-6 flex justify-between items-end">
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white">Planos de Ingeniería</h2>
+            <div class="hidden md:block font-mono font-bold text-xl text-[#C0392B]">/ / /</div>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-[#0a0a0a] tech-border p-6 flex flex-col tech-shadow hover:-translate-y-2 transition-transform">
+                <div class="bg-[#111] w-14 h-14 flex items-center justify-center mb-6 text-white border border-zinc-600">
+                    <i data-lucide="layers" class="w-8 h-8 stroke-[2px]"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-3 text-white">Ingesta Universal</h3>
+                <p class="font-mono text-sm font-medium leading-relaxed flex-grow border-t border-dashed border-zinc-600 pt-4 text-zinc-400">
+                    Acepta inputs de historias de usuario, hilos de Slack, PDFs legales o notas en Google Docs sin fricción.
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-[#0a0a0a] tech-border p-6 flex flex-col tech-shadow hover:-translate-y-2 transition-transform">
+                <div class="bg-[#C0392B] w-14 h-14 flex items-center justify-center mb-6 text-white border border-white">
+                    <i data-lucide="cpu" class="w-8 h-8 stroke-[2px]"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-3 text-white">Agnóstico de Agentes</h3>
+                <p class="font-mono text-sm font-medium leading-relaxed flex-grow border-t border-dashed border-zinc-600 pt-4 text-zinc-400">
+                    Genera una salida estándar (YAML/Markdown estructurado) legible por Cursor, Copilot o agentes custom.
+                </p>
+            </div>
+
+            <!-- Feature 3 -->
+            <div class="bg-[#0a0a0a] tech-border p-6 flex flex-col tech-shadow hover:-translate-y-2 transition-transform">
+                <div class="bg-[#111] w-14 h-14 flex items-center justify-center mb-6 text-white border border-zinc-600">
+                    <i data-lucide="check-square" class="w-8 h-8 stroke-[2px]"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-3 text-white">Verificación 360°</h3>
+                <p class="font-mono text-sm font-medium leading-relaxed flex-grow border-t border-dashed border-zinc-600 pt-4 text-zinc-400">
+                    Provee mecanismos para verificar mecánicamente si el código final cumple con los requisitos del plano base.
+                </p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="bg-[#111] text-white tech-border-brick p-6 flex flex-col tech-shadow-brick md:col-span-2 hover:-translate-y-2 transition-transform">
+                <div class="bg-[#C0392B] w-14 h-14 flex items-center justify-center mb-6 text-white border border-white">
+                    <i data-lucide="network" class="w-8 h-8 stroke-[2px]"></i>
+                </div>
+                <h3 class="text-2xl font-black uppercase mb-3 text-[#C0392B]">Detección de Conflictos</h3>
+                <p class="font-mono text-sm font-medium leading-relaxed flex-grow border-t border-dashed border-[#C0392B] pt-4 text-zinc-300">
+                    Si el PM exige Auth OAuth2, pero el Tech Lead decidió JWT, Intake bloquea la operación durante la fase de preparación. Detecta la anomalía estructural y te alerta antes de gastar un solo token.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom CTA (Sello de aprobación) -->
+    <section class="py-24 px-6 max-w-4xl mx-auto text-center w-full">
+        <div class="border-2 border-zinc-700 p-12 bg-[#0a0a0a] relative hatch-pattern-dark">
+            <div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#C0392B] text-white font-mono font-bold px-6 py-2 uppercase tracking-widest border border-white">
+                DESPLIEGUE INMEDIATO
+            </div>
+            
+            <h2 class="text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6 bg-[#050505] inline-block px-4 tech-border-white text-white">
+                Construye con cimientos.
+            </h2>
+            <br>
+            <p class="text-xl font-mono font-bold mb-10 bg-[#111] inline-block px-4 py-2 border border-zinc-600 text-zinc-300">
+                Intake CLI // Open Source.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row justify-center gap-6">
+                <button class="bg-[#C0392B] text-white font-mono font-bold uppercase tracking-widest px-8 py-4 tech-border-brick tech-shadow-brick tech-button-brick flex items-center justify-center gap-3 text-lg">
+                    <i data-lucide="github" class="w-5 h-5"></i> Repositorio
+                </button>
+                <button class="bg-white text-black font-mono font-bold uppercase tracking-widest px-8 py-4 tech-border-white tech-shadow tech-button flex items-center justify-center gap-3 text-lg">
+                    <i data-lucide="file-text" class="w-5 h-5"></i> Documentación
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t-2 border-zinc-800 bg-[#050505] text-zinc-400 py-12 px-6 mt-auto">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+            <div class="flex items-center gap-3 font-bold font-mono text-xl tracking-tighter uppercase text-white">
+                <i data-lucide="square" class="w-8 h-8 stroke-[2px] text-white"></i>
+                INTAKE_CORE
+            </div>
+            
+            <div class="font-mono text-sm font-medium opacity-70 border border-zinc-800 px-3 py-1">
+                ENSAMBLADO COMO PUENTE UNIVERSAL ENTRE HUMANOS E IA.
+            </div>
+            
+            <div class="flex gap-6 font-mono font-bold uppercase text-sm">
+                <a href="#" class="hover:text-white transition-colors underline decoration-2 underline-offset-4 decoration-zinc-700">GitHub</a>
+                <a href="#" class="hover:text-white transition-colors underline decoration-2 underline-offset-4 decoration-zinc-700">X/Twitter</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

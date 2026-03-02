@@ -1,0 +1,167 @@
+---
+import { t } from '../../i18n/utils';
+import type { Lang } from '../../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const docsPath = lang === 'en' ? `${base}en/docs/` : `${base}docs/`;
+const repoUrl = 'https://github.com/Diego303/intake-cli';
+---
+
+<header class="hero">
+  <div class="hero-frame tech-border">
+    <div class="crop-mark crop-tl"></div>
+    <div class="crop-mark crop-tr"></div>
+    <div class="crop-mark crop-bl"></div>
+    <div class="crop-mark crop-br"></div>
+
+    <div class="hero-inner hatch-pattern-dark">
+      <h1 class="hero-title tech-border-white">
+        {t('hero.titleLine1', lang)}<br />
+        {t('hero.titleLine2', lang)}
+      </h1>
+
+      <div class="hero-desc tech-border tech-shadow">
+        <p class="hero-desc-main">{t('hero.description', lang)}</p>
+        <p class="hero-desc-sub">{t('hero.descriptionSub', lang)}</p>
+      </div>
+
+      <div class="hero-actions">
+        <a href={docsPath} class="btn-brick tech-border-brick tech-shadow-brick tech-button-brick">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          {t('hero.ctaDocs', lang)}
+        </a>
+        <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn-outline tech-border-white tech-shadow tech-button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+          {t('hero.ctaRepo', lang)}
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .hero {
+    padding: 8rem 1.5rem 4rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-frame {
+    background: var(--blueprint-paper);
+    padding: 0.5rem;
+    position: relative;
+  }
+
+  .hero-inner {
+    border: 2px dashed var(--zinc-border);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    background: var(--blueprint-paper);
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    color: white;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-desc {
+    background: var(--blueprint-bg);
+    padding: 1.5rem;
+    max-width: 48rem;
+    margin: 0 auto 2.5rem;
+    position: relative;
+    z-index: 1;
+    border-color: #3f3f46;
+  }
+
+  .hero-desc-main {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.7;
+    color: #d4d4d8;
+    margin-bottom: 1rem;
+  }
+
+  .hero-desc-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.7;
+    color: #a1a1aa;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn-brick,
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .btn-brick {
+    background: var(--brick);
+    color: white;
+  }
+
+  .btn-outline {
+    background: #111;
+    color: white;
+  }
+
+  @media (min-width: 640px) {
+    .hero-actions {
+      flex-direction: row;
+      justify-content: center;
+      width: auto;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .hero-inner {
+      padding: 4rem;
+    }
+
+    .hero {
+      padding-top: 8rem;
+      padding-bottom: 4rem;
+    }
+  }
+</style>

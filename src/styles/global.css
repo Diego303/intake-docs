@@ -1,0 +1,177 @@
+/* ============================================
+   INTAKE — Dark Blueprint Design System
+   ============================================ */
+
+/* --- 1. Design Tokens (CSS Variables) --- */
+:root {
+  /* Fondos y Superficies */
+  --blueprint-bg: #050505;
+  --blueprint-paper: #0a0a0a;
+
+  /* Tintas y Textos */
+  --ink-white: #ededed;
+  --zinc-border: #3f3f46;
+  --grid-line: #1f1f22;
+
+  /* Acentos Semánticos */
+  --brick: #C0392B;
+  --emerald: #34d399;
+
+  /* Espaciado base */
+  --grid-unit: 40px;
+}
+
+/* --- 2. Reset & Base --- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--blueprint-bg);
+  color: var(--ink-white);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+::selection {
+  background-color: var(--brick);
+  color: white;
+}
+
+/* --- 3. Tipografía --- */
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* --- 4. Texturas y Patrones --- */
+.blueprint-grid {
+  background-size: var(--grid-unit) var(--grid-unit);
+  background-image:
+    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+}
+
+.hatch-pattern-dark {
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 5px,
+    rgba(255, 255, 255, 0.05) 5px,
+    rgba(255, 255, 255, 0.05) 6px
+  );
+}
+
+/* --- 5. Bordes Técnicos --- */
+.tech-border {
+  border: 2px solid var(--zinc-border);
+}
+
+.tech-border-white {
+  border: 2px solid var(--ink-white);
+}
+
+.tech-border-brick {
+  border: 2px solid var(--brick);
+}
+
+/* --- 6. Sombras Sólidas (Brutalismo) --- */
+.tech-shadow {
+  box-shadow: 6px 6px 0px 0px var(--zinc-border);
+  transition: all 0.15s ease;
+}
+
+.tech-shadow-brick {
+  box-shadow: 6px 6px 0px 0px var(--brick);
+  transition: all 0.15s ease;
+}
+
+.tech-shadow-white {
+  box-shadow: 4px 4px 0px 0px var(--ink-white);
+}
+
+/* --- 7. Botones e Interacciones --- */
+.tech-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px 0px var(--zinc-border);
+}
+
+.tech-button:active {
+  transform: translate(6px, 6px);
+  box-shadow: 0px 0px 0px 0px var(--zinc-border);
+}
+
+.tech-button-brick:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 4px 4px 0px 0px var(--brick);
+}
+
+.tech-button-brick:active {
+  transform: translate(6px, 6px);
+  box-shadow: 0px 0px 0px 0px var(--brick);
+}
+
+/* --- 8. Marcas de Corte (Crop Marks) --- */
+.crop-mark {
+  position: absolute;
+  width: 15px;
+  height: 15px;
+  border-color: var(--zinc-border);
+}
+
+.crop-tl { top: -2px; left: -2px; border-top: 2px solid; border-left: 2px solid; }
+.crop-tr { top: -2px; right: -2px; border-top: 2px solid; border-right: 2px solid; }
+.crop-bl { bottom: -2px; left: -2px; border-bottom: 2px solid; border-left: 2px solid; }
+.crop-br { bottom: -2px; right: -2px; border-bottom: 2px solid; border-right: 2px solid; }
+
+/* --- 9. Utilidades Globales --- */
+.container {
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  width: 100%;
+}
+
+.container-narrow {
+  max-width: 960px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+  width: 100%;
+}
+
+.uppercase-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- 10. Scrollbar personalizado --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--blueprint-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--zinc-border);
+  border: 1px solid var(--blueprint-bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
