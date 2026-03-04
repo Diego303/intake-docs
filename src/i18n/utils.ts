@@ -54,10 +54,18 @@ export function getLocalizedPath(path: string, lang: Lang): string {
   return `/en${clean}`;
 }
 
-/** Semantic route mappings between languages */
+/** Semantic route mappings between languages (ES → EN) */
 const routeMap: Record<string, string> = {
-  // ES → EN
   'docs': 'docs',
+  'introduccion': 'introduction',
+  'arquitectura': 'architecture',
+  'guia-cli': 'cli-guide',
+  'configuracion': 'configuration',
+  'formatos-entrada': 'input-formats',
+  'verificacion': 'verification',
+  'exportacion': 'export',
+  'buenas-practicas': 'best-practices',
+  'solucion-problemas': 'troubleshooting',
 };
 
 const reverseRouteMap: Record<string, string> = Object.fromEntries(

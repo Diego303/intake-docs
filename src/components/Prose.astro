@@ -85,6 +85,8 @@
     color: var(--brick);
     padding: 0.125rem 0.375rem;
     border: 1px solid #27272a;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   /* Code blocks */
@@ -108,11 +110,22 @@
   }
 
   /* Tables */
+  .prose :global(.table-wrapper) {
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .prose :global(table) {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 1.5rem;
     font-size: 0.9rem;
+    min-width: 400px;
+  }
+
+  .prose :global(.table-wrapper table) {
+    margin-bottom: 0;
   }
 
   .prose :global(thead) {
@@ -157,4 +170,34 @@
     color: white;
     font-weight: 700;
   }
+
+  /* Responsive */
+  @media (max-width: 640px) {
+    .prose :global(h1) {
+      font-size: 1.75rem;
+    }
+
+    .prose :global(h2) {
+      font-size: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .prose :global(pre) {
+      font-size: 0.8rem;
+      padding: 1rem;
+    }
+  }
 </style>
+
+<script>
+  // Wrap tables in a scroll container for mobile
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.prose table').forEach(table => {
+      if (table.parentElement?.classList.contains('table-wrapper')) return;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'table-wrapper';
+      table.parentNode?.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+  });
+</script>

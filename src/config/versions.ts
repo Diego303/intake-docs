@@ -5,7 +5,8 @@ export interface VersionConfig {
 }
 
 export const VERSIONS: VersionConfig[] = [
-  { id: 'v0-1-0', label: 'v0.1.0', latest: true },
+  { id: 'v0-2-0', label: 'v0.2.0', latest: true },
+  { id: 'v0-1-0', label: 'v0.1.0', latest: false },
 ];
 
 /** Extract version id from a slug like "v0-1-0/getting-started" */
@@ -25,7 +26,7 @@ export async function getVersionsForLang(lang: 'es' | 'en'): Promise<VersionConf
   // which version folders exist for each language's collection.
   if (lang === 'en') {
     // English may have fewer versions
-    return VERSIONS.filter(v => v.id === 'v0-1-0');
+    return VERSIONS.filter(v => ['v0-1-0', 'v0-2-0'].includes(v.id));
   }
   return VERSIONS;
 }
