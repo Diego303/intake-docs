@@ -66,6 +66,14 @@ const routeMap: Record<string, string> = {
   'exportacion': 'export',
   'buenas-practicas': 'best-practices',
   'solucion-problemas': 'troubleshooting',
+  'conectores': 'connectors',
+  'feedback': 'feedback',
+  'flujos-trabajo': 'workflows',
+  'integracion-cicd': 'ci-cd-integration',
+  'despliegue': 'deployment',
+  'seguridad': 'security',
+  'pipeline': 'pipeline',
+  'plugins': 'plugins',
 };
 
 const reverseRouteMap: Record<string, string> = Object.fromEntries(
