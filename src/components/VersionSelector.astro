@@ -10,6 +10,8 @@ interface Props {
 }
 
 const { versions, currentVersion, lang } = Astro.props;
+const latestVersion = versions.find(v => v.latest);
+const defaultVersion = currentVersion || latestVersion?.id || versions[0]?.id;
 ---
 
 <div class="version-selector">
@@ -18,11 +20,8 @@ const { versions, currentVersion, lang } = Astro.props;
     id="version-selector"
     aria-label={t('docsHub.allVersions', lang)}
   >
-    <option value="all" selected={!currentVersion}>
-      {t('docsHub.allVersions', lang)}
-    </option>
     {versions.map(v => (
-      <option value={v.id} selected={currentVersion === v.id}>
+      <option value={v.id} selected={defaultVersion === v.id}>
         {v.label}{v.latest ? ' (latest)' : ''}
       </option>
     ))}

@@ -241,6 +241,47 @@ const { lang } = Astro.props;
     color: #a1a1aa;
   }
 
+  @media (max-width: 480px) {
+    .problem-section {
+      padding: 3rem 1rem;
+    }
+
+    .problem-header {
+      margin-bottom: 2rem;
+    }
+
+    .problem-grid {
+      gap: 1.5rem;
+    }
+
+    .problem-card {
+      padding: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      gap: 0.5rem;
+    }
+
+    .card-title svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .card-body,
+    .card-body-optimal {
+      padding: 1rem;
+    }
+
+    .item-title {
+      font-size: 0.85rem;
+    }
+
+    .item-desc {
+      font-size: 0.75rem;
+    }
+  }
+
   @media (min-width: 768px) {
     .problem-grid {
       grid-template-columns: 1fr 1fr;
