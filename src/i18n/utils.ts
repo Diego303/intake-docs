@@ -74,6 +74,8 @@ const routeMap: Record<string, string> = {
   'seguridad': 'security',
   'pipeline': 'pipeline',
   'plugins': 'plugins',
+  'mcp-server': 'mcp-server',
+  'watch-mode': 'watch-mode',
 };
 
 const reverseRouteMap: Record<string, string> = Object.fromEntries(
