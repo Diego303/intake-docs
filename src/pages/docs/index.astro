@@ -46,7 +46,7 @@ const sortedDocs = allDocs.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?
         const versionConfig = VERSIONS.find(v => v.id === version);
         return (
           <a
-            href={`${base}docs/${doc.id}/`}
+            href={`${base}docs/${doc.id.replace(/\.mdx?$/, '')}/`}
             class="doc-card tech-border tech-shadow"
             data-version={version}
             data-title={doc.data.title?.toLowerCase() || ''}

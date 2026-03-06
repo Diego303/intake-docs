@@ -248,7 +248,7 @@ El caso de uso mas comun: verificar specs en cada PR y exportar al mergear.
 PR abierto → intake verify (CI) → Review → Merge → intake export (CI)
 ```
 
-Ver [Integracion CI/CD](../integracion-cicd/) para ejemplos completos de GitHub Actions, GitLab CI, Jenkins y Azure DevOps.
+Ver [Integracion CI/CD](../ci-cd-integration/) para ejemplos completos de GitHub Actions, GitLab CI, Jenkins y Azure DevOps.
 
 ### Como job programado (spec drift)
 
@@ -261,7 +261,7 @@ intake show specs/mi-feature/
 # Si staleness detected → crear issue / notificar
 ```
 
-Ver [Integracion CI/CD > Deteccion de spec drift](../integracion-cicd/#deteccion-de-spec-drift) para la implementacion.
+Ver [Integracion CI/CD > Deteccion de spec drift](../ci-cd-integration/#deteccion-de-spec-drift) para la implementacion.
 
 ### En pipeline de agentes IA
 
@@ -275,7 +275,7 @@ Ver [Integracion CI/CD > Deteccion de spec drift](../integracion-cicd/#deteccion
 7. Repetir 4-6 hasta que todos los checks pasen
 ```
 
-Ver [Flujos de trabajo > Workflow con agentes IA](../flujos-trabajo/#workflow-con-agentes-ia) para detalles.
+Ver [Flujos de trabajo > Workflow con agentes IA](../workflows/#workflow-con-agentes-ia) para detalles.
 
 ---
 
@@ -296,7 +296,7 @@ Ver [Flujos de trabajo > Workflow con agentes IA](../flujos-trabajo/#workflow-co
 
 **Nota:** Los nombres de las variables son configurables en `.intake.yaml`. Los valores por defecto se listan arriba.
 
-Ver [Seguridad](../seguridad/) para mejores practicas de gestion de secretos.
+Ver [Seguridad](../security/) para mejores practicas de gestion de secretos.
 
 ---
 

@@ -282,7 +282,7 @@ Watch error: acceptance.yaml not found in specs/mi-feature/
   Hint: Run 'intake init' to generate acceptance.yaml.
 ```
 
-**Solucion:** la spec necesita un archivo `acceptance.yaml` con los checks definidos. Regenerar la spec con `intake init` o crear el archivo manualmente (ver [Verificacion](../verificacion/)).
+**Solucion:** la spec necesita un archivo `acceptance.yaml` con los checks definidos. Regenerar la spec con `intake init` o crear el archivo manualmente (ver [Verificacion](../verification/)).
 
 ### Los cambios no disparan re-verificacion
 

@@ -74,7 +74,7 @@ Antes de parsear, cada archivo pasa por validaciones centralizadas:
 - Si el archivo esta vacio o solo tiene whitespace: error `EmptySourceError`
 - Encoding: intenta UTF-8 primero, fallback a latin-1
 
-Ver [Formatos de entrada](../formatos-entrada/) para detalles de cada parser.
+Ver [Formatos de entrada](../input-formats/) para detalles de cada parser.
 
 ---
 
@@ -278,7 +278,7 @@ Ejecuta los checks definidos en `acceptance.yaml` contra el directorio del proye
 | `json` | `JsonReporter` | JSON machine-readable |
 | `junit` | `JunitReporter` | XML JUnit para CI (GitHub Actions, Jenkins) |
 
-Ver [Verificación](../verificacion/) para detalles completos.
+Ver [Verificación](../verification/) para detalles completos.
 
 ---
 
@@ -302,7 +302,7 @@ Toma los archivos spec generados y los transforma en un formato listo para un ag
 | `kiro` | `requirements.md` + `design.md` + `tasks.md` (formato nativo) | Kiro |
 | `copilot` | `.github/copilot-instructions.md` | GitHub Copilot |
 
-Ver [Exportación](../exportacion/) para detalles completos.
+Ver [Exportación](../export/) para detalles completos.
 
 ---
 

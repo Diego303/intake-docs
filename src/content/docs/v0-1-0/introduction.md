@@ -49,15 +49,15 @@ pip install -e ".[dev]"
 
 | Documento | Descripción |
 |-----------|-------------|
-| [Arquitectura](../arquitectura/) | Arquitectura del sistema, módulos, flujo de datos y decisiones de diseño |
-| [Guía CLI](../guia-cli/) | Referencia completa de los 8 comandos con todas sus opciones |
-| [Configuración](../configuracion/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
+| [Arquitectura](../architecture/) | Arquitectura del sistema, módulos, flujo de datos y decisiones de diseño |
+| [Guía CLI](../cli-guide/) | Referencia completa de los 8 comandos con todas sus opciones |
+| [Configuración](../configuration/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
 | [Pipeline](../pipeline/) | Cómo funciona el pipeline de 5 fases en detalle |
-| [Formatos de entrada](../formatos-entrada/) | Los 8 parsers soportados, qué extraen y cómo se auto-detectan |
-| [Verificación](../verificacion/) | Motor de checks de aceptación, reporters y CI/CD |
-| [Exportación](../exportacion/) | Formatos de exportación para agentes IA |
-| [Buenas prácticas](../buenas-practicas/) | Tips, patrones recomendados y cómo sacar el máximo provecho |
-| [Solución de problemas](../solucion-problemas/) | Errores comunes, diagnóstico y FAQ |
+| [Formatos de entrada](../input-formats/) | Los 8 parsers soportados, qué extraen y cómo se auto-detectan |
+| [Verificación](../verification/) | Motor de checks de aceptación, reporters y CI/CD |
+| [Exportación](../export/) | Formatos de exportación para agentes IA |
+| [Buenas prácticas](../best-practices/) | Tips, patrones recomendados y cómo sacar el máximo provecho |
+| [Solución de problemas](../troubleshooting/) | Errores comunes, diagnóstico y FAQ |
 
 ---
 

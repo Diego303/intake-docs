@@ -49,16 +49,16 @@ pip install -e ".[dev]"
 
 | Documento | Descripcion |
 |-----------|-------------|
-| [Arquitectura](../arquitectura/) | Arquitectura del sistema, modulos, flujo de datos y decisiones de diseno |
-| [Guia CLI](../guia-cli/) | Referencia completa de los 13 comandos/subcomandos con todas sus opciones |
-| [Configuracion](../configuracion/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
+| [Arquitectura](../architecture/) | Arquitectura del sistema, modulos, flujo de datos y decisiones de diseno |
+| [Guia CLI](../cli-guide/) | Referencia completa de los 13 comandos/subcomandos con todas sus opciones |
+| [Configuracion](../configuration/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
 | [Pipeline](../pipeline/) | Como funciona el pipeline de 5 fases en detalle |
-| [Formatos de entrada](../formatos-entrada/) | Los 11 parsers soportados, que extraen y como se auto-detectan |
+| [Formatos de entrada](../input-formats/) | Los 11 parsers soportados, que extraen y como se auto-detectan |
 | [Plugins](../plugins/) | Sistema de plugins: protocolos, descubrimiento, hooks y como crear plugins |
-| [Verificacion](../verificacion/) | Motor de checks de aceptacion, reporters y CI/CD |
-| [Exportacion](../exportacion/) | Formatos de exportacion para agentes IA |
-| [Buenas practicas](../buenas-practicas/) | Tips, patrones recomendados y como sacar el maximo provecho |
-| [Solucion de problemas](../solucion-problemas/) | Errores comunes, diagnostico y FAQ |
+| [Verificacion](../verification/) | Motor de checks de aceptacion, reporters y CI/CD |
+| [Exportacion](../export/) | Formatos de exportacion para agentes IA |
+| [Buenas practicas](../best-practices/) | Tips, patrones recomendados y como sacar el maximo provecho |
+| [Solucion de problemas](../troubleshooting/) | Errores comunes, diagnostico y FAQ |
 
 ---
 
