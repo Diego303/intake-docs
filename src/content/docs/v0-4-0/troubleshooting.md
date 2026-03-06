@@ -1,7 +1,7 @@
 ---
 title: "Solución de Problemas"
 description: "Errores comunes, diagnóstico y FAQ."
-order: 17
+order: 19
 icon: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM9.09 9a3 3 0 015.83 1c0 2-3 3-3 3M12 17h.01"
 ---
 
@@ -31,6 +31,8 @@ Esto verifica:
 | markdownify | Paquete instalado | Si |
 | litellm | Paquete instalado | Si |
 | jinja2 | Paquete instalado | Si |
+| mcp package | Paquete `mcp` instalado (si mcp configurado) | Si |
+| watchfiles | Paquete `watchfiles` instalado (si watch configurado) | Si |
 | Config file | `.intake.yaml` valido | Si |
 | Jira credentials | `JIRA_API_TOKEN` + `JIRA_EMAIL` (si jira configurado) | No |
 | Confluence credentials | `CONFLUENCE_API_TOKEN` + `CONFLUENCE_EMAIL` (si confluence configurado) | No |
@@ -230,7 +232,7 @@ Unsupported format: 'xlsx' for source 'data.xlsx'
 
 - Exportar a CSV o JSON desde Excel
 - Copiar el contenido a un archivo de texto o Markdown
-- Convertir a otro formato soportado (ver [Formatos de entrada](../formatos-entrada/))
+- Convertir a otro formato soportado (ver [Formatos de entrada](../input-formats/))
 
 ---
 
@@ -420,6 +422,76 @@ intake plugins check     # Reporta FAIL con detalles
 
 ---
 
+### Servidor MCP no arranca
+
+**Error:**
+```
+ImportError: MCP server requires the mcp package. Install with: pip install intake-ai-cli[mcp]
+```
+
+**Solucion:**
+
+```bash
+pip install "intake-ai-cli[mcp]"
+```
+
+Si usas transporte SSE y falta `starlette` o `uvicorn`:
+
+```bash
+pip install starlette uvicorn
+```
+
+**Puerto SSE ocupado:**
+```
+Error: [Errno 98] Address already in use
+```
+
+Cambiar el puerto:
+
+```bash
+intake mcp serve --transport sse --port 9090
+```
+
+O en `.intake.yaml`:
+
+```yaml
+mcp:
+  sse_port: 9090
+```
+
+---
+
+### Watch mode no arranca
+
+**Error:**
+```
+ImportError: Watch mode requires the watchfiles package. Install with: pip install intake-ai-cli[watch]
+```
+
+**Solucion:**
+
+```bash
+pip install "intake-ai-cli[watch]"
+```
+
+**Spec directory no encontrado:**
+```
+Watch error: Spec directory not found: specs/mi-feature
+  Hint: Run 'intake init' first to generate a spec.
+```
+
+Verificar que el directorio de la spec existe y contiene `acceptance.yaml`.
+
+**acceptance.yaml no encontrado:**
+```
+Watch error: acceptance.yaml not found in specs/mi-feature
+  Hint: Run 'intake init' to generate acceptance.yaml.
+```
+
+Regenerar la spec con `intake init` o verificar que la spec fue generada en modo `standard` o `enterprise` (el modo `quick` no genera `acceptance.yaml`).
+
+---
+
 ### acceptance.yaml invalido
 
 **Error:**
@@ -460,6 +532,8 @@ Solo para `intake init` y `intake add` (que requieren llamadas al LLM). Todo lo 
 - `intake show` / `intake list` — lee archivos locales
 - `intake diff` — compara archivos locales
 - `intake doctor` — verifica el entorno local
+- `intake mcp serve` — ejecuta el servidor MCP localmente
+- `intake watch` — monitorea archivos y re-verifica localmente
 
 ### Puedo usar modelos locales?
 
@@ -520,11 +594,11 @@ intake add specs/mi-feature/ -s nuevos-reqs.md --regenerate
 
 ### Puedo usar intake en CI/CD?
 
-Si. Ver la seccion de [integracion CI/CD](../verificacion/#integracion-con-cicd) en la guia de verificacion.
+Si. Ver la seccion de [integracion CI/CD](../verification/#integracion-con-cicd) en la guia de verificacion.
 
 ### Los archivos spec se deben commitear a git?
 
-Si, es recomendable. Las specs son archivos de texto que se benefician del versionado. Ver [Versionado de specs](../buenas-practicas/#versionado-de-specs).
+Si, es recomendable. Las specs son archivos de texto que se benefician del versionado. Ver [Versionado de specs](../best-practices/#versionado-de-specs).
 
 ### Que es el modo quick / standard / enterprise?
 

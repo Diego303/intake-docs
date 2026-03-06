@@ -9,7 +9,7 @@ import { VERSIONS, getVersionFromSlug } from '../../config/versions';
 export async function getStaticPaths() {
   const docs = await getCollection('docs');
   return docs.map(entry => ({
-    params: { slug: entry.id },
+    params: { slug: entry.id.replace(/\.mdx?$/, '') },
     props: { entry },
   }));
 }

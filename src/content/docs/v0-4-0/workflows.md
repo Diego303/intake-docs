@@ -449,4 +449,4 @@ Resultado verificable
 
 Cada eslabón es un archivo de texto versionable, auditable y consultable.
 
-Ver [Seguridad > Auditoria y trazabilidad](../seguridad/#auditoria-y-trazabilidad) para mas detalles.
+Ver [Seguridad > Auditoria y trazabilidad](../security/#auditoria-y-trazabilidad) para mas detalles.

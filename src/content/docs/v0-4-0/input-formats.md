@@ -1,6 +1,6 @@
 ---
 title: "Formatos de Entrada"
-description: "Los 11 parsers soportados, qué extraen y cómo se auto-detectan."
+description: "Los 11 parsers + 3 conectores API, qué extraen y cómo se auto-detectan."
 order: 6
 icon: "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8"
 ---
@@ -474,7 +474,7 @@ Los issues se descargan como JSON temporal y se parsean con `GithubIssuesParser`
 
 ### Configuracion de conectores
 
-Ver [Configuración > Conectores](../configuracion/#seccion-connectors) para los campos de configuracion completos. Los conectores necesitan:
+Ver [Configuracion > Conectores](../configuration/) para los campos de configuracion completos. Los conectores necesitan:
 
 1. URL base de la instancia (Jira/Confluence) o token (GitHub)
 2. Credenciales via variables de entorno

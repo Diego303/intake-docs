@@ -53,37 +53,37 @@ pip install -e ".[dev]"
 
 | Documento | Descripcion |
 |-----------|-------------|
-| [Arquitectura](../arquitectura/) | Arquitectura del sistema, modulos, flujo de datos y decisiones de diseno |
-| [Guía CLI](../guia-cli/) | Referencia completa de los 15 comandos/subcomandos con todas sus opciones |
-| [Configuración](../configuracion/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
+| [Arquitectura](../architecture/) | Arquitectura del sistema, modulos, flujo de datos y decisiones de diseno |
+| [Guía CLI](../cli-guide/) | Referencia completa de los 15 comandos/subcomandos con todas sus opciones |
+| [Configuración](../configuration/) | Todas las opciones de `.intake.yaml`, presets y variables de entorno |
 
 **Pipeline:**
 
 | Documento | Descripcion |
 |-----------|-------------|
 | [Pipeline](../pipeline/) | Como funciona el pipeline de 5 fases + feedback loop en detalle |
-| [Formatos de entrada](../formatos-entrada/) | Los 11 parsers + 3 conectores API, que extraen y como se auto-detectan |
-| [Conectores](../conectores/) | Conectores API directos: Jira, Confluence, GitHub |
+| [Formatos de entrada](../input-formats/) | Los 11 parsers + 3 conectores API, que extraen y como se auto-detectan |
+| [Conectores](../connectors/) | Conectores API directos: Jira, Confluence, GitHub |
 | [Plugins](../plugins/) | Sistema de plugins: protocolos, descubrimiento, hooks y como crear plugins |
-| [Verificación](../verificacion/) | Motor de checks de aceptacion, reporters y CI/CD |
-| [Exportación](../exportacion/) | 6 formatos de exportacion para agentes IA |
+| [Verificación](../verification/) | Motor de checks de aceptacion, reporters y CI/CD |
+| [Exportación](../export/) | 6 formatos de exportacion para agentes IA |
 | [Feedback](../feedback/) | Feedback loop: analisis de fallos y enmiendas a la spec |
 
 **Operaciones y enterprise:**
 
 | Documento | Descripcion |
 |-----------|-------------|
-| [Despliegue](../despliegue/) | Docker, pre-commit hooks y patrones de despliegue para equipos |
-| [Integración CI/CD](../integracion-cicd/) | GitHub Actions, GitLab CI, Jenkins, Azure DevOps |
-| [Seguridad](../seguridad/) | Modelo de amenazas, gestion de secretos, redaccion, cumplimiento |
-| [Flujos de trabajo](../flujos-trabajo/) | Patrones para equipos de todos los tamanos: individual a empresa |
+| [Despliegue](../deployment/) | Docker, pre-commit hooks y patrones de despliegue para equipos |
+| [Integración CI/CD](../ci-cd-integration/) | GitHub Actions, GitLab CI, Jenkins, Azure DevOps |
+| [Seguridad](../security/) | Modelo de amenazas, gestion de secretos, redaccion, cumplimiento |
+| [Flujos de trabajo](../workflows/) | Patrones para equipos de todos los tamanos: individual a empresa |
 
 **Referencia:**
 
 | Documento | Descripcion |
 |-----------|-------------|
-| [Buenas prácticas](../buenas-practicas/) | Tips, patrones recomendados y como sacar el maximo provecho |
-| [Solución de problemas](../solucion-problemas/) | Errores comunes, diagnostico y FAQ |
+| [Buenas prácticas](../best-practices/) | Tips, patrones recomendados y como sacar el maximo provecho |
+| [Solución de problemas](../troubleshooting/) | Errores comunes, diagnostico y FAQ |
 
 ---
 

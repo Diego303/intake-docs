@@ -408,7 +408,7 @@ jq '{passed: .passed, failed: .failed, all_ok: .all_required_passed}' results.js
 
 ## Pre-commit hooks
 
-Ver [Despliegue > Pre-commit hooks](../despliegue/#pre-commit-hooks) para configuracion detallada.
+Ver [Despliegue > Pre-commit hooks](../deployment/#pre-commit-hooks) para configuracion detallada.
 
 Resumen rapido:
 

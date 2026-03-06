@@ -122,7 +122,7 @@ intake no cachea tokens entre ejecuciones. Al rotar una credencial:
 | Jenkins | Credentials plugin | `withCredentials([string(...)])` |
 | Azure DevOps | Variable groups (secret) | `$(ANTHROPIC_API_KEY)` |
 
-Ver [Integracion CI/CD](../integracion-cicd/) para ejemplos completos.
+Ver [Integracion CI/CD](../ci-cd-integration/) para ejemplos completos.
 
 ---
 

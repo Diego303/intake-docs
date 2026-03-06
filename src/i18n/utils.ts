@@ -54,34 +54,6 @@ export function getLocalizedPath(path: string, lang: Lang): string {
   return `/en${clean}`;
 }
 
-/** Semantic route mappings between languages (ES → EN) */
-const routeMap: Record<string, string> = {
-  'docs': 'docs',
-  'introduccion': 'introduction',
-  'arquitectura': 'architecture',
-  'guia-cli': 'cli-guide',
-  'configuracion': 'configuration',
-  'formatos-entrada': 'input-formats',
-  'verificacion': 'verification',
-  'exportacion': 'export',
-  'buenas-practicas': 'best-practices',
-  'solucion-problemas': 'troubleshooting',
-  'conectores': 'connectors',
-  'feedback': 'feedback',
-  'flujos-trabajo': 'workflows',
-  'integracion-cicd': 'ci-cd-integration',
-  'despliegue': 'deployment',
-  'seguridad': 'security',
-  'pipeline': 'pipeline',
-  'plugins': 'plugins',
-  'mcp-server': 'mcp-server',
-  'watch-mode': 'watch-mode',
-};
-
-const reverseRouteMap: Record<string, string> = Object.fromEntries(
-  Object.entries(routeMap).map(([k, v]) => [v, k])
-);
-
 /** Get the alternate language path for the language toggle */
 export function getAlternateLangPath(url: URL, targetLang: Lang): string {
   const segments = url.pathname.split('/').filter(Boolean);
@@ -89,13 +61,11 @@ export function getAlternateLangPath(url: URL, targetLang: Lang): string {
   const filtered = segments.filter(s => s !== basePath);
 
   if (targetLang === 'en') {
-    // Current is ES → target EN
-    const mapped = filtered.map(s => routeMap[s] || s);
-    return `/${basePath}/en/${mapped.join('/')}` || `/${basePath}/en/`;
+    // Current is ES → target EN: add 'en' prefix
+    return `/${basePath}/en/${filtered.join('/')}/`;
   } else {
-    // Current is EN → target ES, remove 'en' prefix
+    // Current is EN → target ES: remove 'en' prefix
     const withoutEn = filtered.filter(s => s !== 'en');
-    const mapped = withoutEn.map(s => reverseRouteMap[s] || s);
-    return `/${basePath}/${mapped.join('/')}` || `/${basePath}/`;
+    return `/${basePath}/${withoutEn.join('/')}/`;
   }
 }

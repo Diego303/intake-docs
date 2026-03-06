@@ -225,7 +225,7 @@ El `spec.lock.yaml` tiene hashes de las fuentes. Puedes verificar si las fuentes
 intake show specs/mi-feature/
 ```
 
-Para integrar la verificacion en CI/CD (GitHub Actions, GitLab CI, Jenkins, Azure DevOps), ver [Integracion CI/CD](../integracion-cicd/).
+Para integrar la verificacion en CI/CD (GitHub Actions, GitLab CI, Jenkins, Azure DevOps), ver [Integracion CI/CD](../ci-cd-integration/).
 
 ---
 
@@ -267,7 +267,7 @@ security:
     - "secrets.*"
 ```
 
-Para una guia de seguridad completa (modelo de amenazas, modo air-gapped, cumplimiento), ver [Seguridad](../seguridad/).
+Para una guia de seguridad completa (modelo de amenazas, modo air-gapped, cumplimiento), ver [Seguridad](../security/).
 
 ---
 
@@ -297,7 +297,7 @@ mi-proyecto/
 └── tests/                    # Tests
 ```
 
-Para contenerizacion y despliegue en equipos, ver [Despliegue](../despliegue/).
+Para contenerizacion y despliegue en equipos, ver [Despliegue](../deployment/).
 
 ### Un spec por feature
 
@@ -388,7 +388,7 @@ intake descarga la pagina, convierte el HTML a Markdown, y lo procesa como cualq
 8. Iterar hasta que todos los checks pasen
 ```
 
-Para patrones de trabajo por tamano de equipo (individual, equipo, empresa), ver [Flujos de trabajo](../flujos-trabajo/).
+Para patrones de trabajo por tamano de equipo (individual, equipo, empresa), ver [Flujos de trabajo](../workflows/).
 
 ---
 

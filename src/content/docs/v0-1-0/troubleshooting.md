@@ -142,7 +142,7 @@ Unsupported format: 'xlsx' for source 'data.xlsx'
 
 - Exportar a CSV o JSON desde Excel
 - Copiar el contenido a un archivo de texto o Markdown
-- Convertir a otro formato soportado (ver [Formatos de entrada](../formatos-entrada/))
+- Convertir a otro formato soportado (ver [Formatos de entrada](../input-formats/))
 
 ---
 
@@ -401,8 +401,8 @@ intake add specs/mi-feature/ -s nuevos-reqs.md --regenerate
 
 ### ¿Puedo usar intake en CI/CD?
 
-Sí. Ver la sección de [integración CI/CD](../verificacion/#integración-con-cicd) en la guía de verificación.
+Sí. Ver la sección de [integración CI/CD](../verification/#integración-con-cicd) en la guía de verificación.
 
 ### ¿Los archivos spec se deben commitear a git?
 
-Sí, es recomendable. Las specs son archivos de texto que se benefician del versionado. Ver [Versionado de specs](../buenas-practicas/#versionado-de-specs).
+Sí, es recomendable. Las specs son archivos de texto que se benefician del versionado. Ver [Versionado de specs](../best-practices/#versionado-de-specs).
