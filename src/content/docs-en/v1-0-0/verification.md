@@ -1,0 +1,404 @@
+---
+title: "Verification"
+description: "Acceptance check engine, reporters and CI/CD."
+order: 8
+icon: "M22 11.08V12a10 10 0 11-5.93-9.14M22 4L12 14.01l-3-3"
+---
+
+# Verification
+
+The verification engine runs acceptance checks defined in `acceptance.yaml` against the project directory. It answers the question: "does the implementation meet the spec?"
+
+---
+
+## Command
+
+```bash
+intake verify <SPEC_DIR> -p <PROJECT_DIR> [options]
+```
+
+```bash
+# Verify with terminal report
+intake verify specs/api-de-usuarios/ -p .
+
+# Only checks with tag "api"
+intake verify specs/api-de-usuarios/ -p . -t api -t security
+
+# JUnit format for CI
+intake verify specs/api-de-usuarios/ -p . -f junit > test-results.xml
+
+# Stop on first failure
+intake verify specs/api-de-usuarios/ -p . --fail-fast
+```
+
+---
+
+## Structure of acceptance.yaml
+
+```yaml
+checks:
+  - id: check-01
+    name: "Tests unitarios pasan"
+    type: command
+    command: "python -m pytest tests/ -q"
+    required: true
+    tags: [tests, ci]
+
+  - id: check-02
+    name: "Archivo de rutas existe"
+    type: files_exist
+    paths:
+      - src/routes.py
+      - src/models.py
+    required: true
+    tags: [structure]
+
+  - id: check-03
+    name: "Endpoints tienen autenticacion"
+    type: pattern_present
+    glob: "src/**/*.py"
+    patterns:
+      - "auth_required|@login_required|verify_token"
+    required: true
+    tags: [security]
+
+  - id: check-04
+    name: "Sin passwords hardcodeados"
+    type: pattern_absent
+    glob: "src/**/*.py"
+    patterns:
+      - "password\\s*=\\s*['\"]\\w+"
+    required: true
+    tags: [security]
+```
+
+---
+
+## The 4 Check Types
+
+### command
+
+Runs a shell command and verifies that the exit code is 0.
+
+```yaml
+- id: check-tests
+  name: "Tests pasan"
+  type: command
+  command: "python -m pytest tests/ -q"
+  required: true
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `command` | string | Shell command to execute |
+
+The command runs in the project directory (`--project-dir`). stdout and stderr are captured (truncated to 1000 and 500 chars respectively).
+
+**Timeout:** configurable via `verification.timeout_per_check` (default: 120 seconds).
+
+### files_exist
+
+Verifies that all listed files exist.
+
+```yaml
+- id: check-structure
+  name: "Archivos principales existen"
+  type: files_exist
+  paths:
+    - src/main.py
+    - src/models.py
+    - tests/test_main.py
+  required: true
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `paths` | list[string] | Paths relative to the project directory |
+
+Fails if **any** of the paths does not exist.
+
+### pattern_present
+
+Verifies that regex patterns exist in files matching a glob.
+
+```yaml
+- id: check-logging
+  name: "Modulos tienen logging"
+  type: pattern_present
+  glob: "src/**/*.py"
+  patterns:
+    - "import logging|import structlog"
+  required: false
+  tags: [quality]
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `glob` | string | Glob pattern to find files (e.g., `src/**/*.py`) |
+| `patterns` | list[string] | Regex patterns to search for (case-insensitive) |
+
+Fails if **any** pattern is not found in **any** file matching the glob. In other words, it verifies that ALL patterns are present in ALL files.
+
+### pattern_absent
+
+Verifies that regex patterns do NOT exist in files matching a glob.
+
+```yaml
+- id: check-no-secrets
+  name: "Sin secrets hardcodeados"
+  type: pattern_absent
+  glob: "src/**/*.py"
+  patterns:
+    - "API_KEY\\s*=\\s*['\"]sk-"
+    - "password\\s*=\\s*['\"]\\w{8,}"
+  required: true
+  tags: [security]
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `glob` | string | Glob pattern to find files |
+| `patterns` | list[string] | Regex patterns that must NOT exist (case-insensitive) |
+
+Fails if **any** pattern is found in **any** file.
+
+---
+
+## Common Fields for Each Check
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `id` | string | `"unknown"` | Unique check identifier |
+| `name` | string | same as `id` | Descriptive name |
+| `type` | string | `"command"` | Check type: `command`, `files_exist`, `pattern_present`, `pattern_absent` |
+| `required` | bool | `true` | Whether it is mandatory. Non-required checks can fail without affecting the exit code. |
+| `tags` | list[string] | `[]` | Tags for filtering with `--tags` |
+
+---
+
+## Tags and Filtering
+
+Checks can have tags to run subsets:
+
+```yaml
+checks:
+  - id: check-tests
+    tags: [tests, ci]
+    ...
+  - id: check-security
+    tags: [security, ci]
+    ...
+  - id: check-docs
+    tags: [docs]
+    ...
+```
+
+```bash
+# Only checks with tag "ci"
+intake verify specs/my-spec/ -p . -t ci
+
+# Checks with tag "security" OR "tests"
+intake verify specs/my-spec/ -p . -t security -t tests
+```
+
+A check runs if it has **at least one** of the specified tags.
+
+---
+
+## Fail-fast
+
+With `--fail-fast`, verification stops at the first **required** check that fails:
+
+```bash
+intake verify specs/my-spec/ -p . --fail-fast
+```
+
+Checks that were not executed are counted as "skipped" in the report.
+
+---
+
+## Report Formats
+
+### Terminal (default)
+
+Rich table with colors:
+
+```
+                    Verification Report: my-spec
+┏━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┳━━━━━━━━━━┳━━━━━━━━┓
+┃ ID        ┃ Check             ┃ Status ┃ Required ┃ Time   ┃
+┡━━━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━╇━━━━━━━━╇━━━━━━━━━━╇━━━━━━━━┩
+│ check-01  │ Tests pasan       │ PASS   │ Yes      │ 1.2s   │
+│ check-02  │ Archivos existen  │ PASS   │ Yes      │ 0.0s   │
+│ check-03  │ Auth presente     │ FAIL   │ Yes      │ 0.1s   │
+└───────────┴───────────────────┴────────┴──────────┴────────┘
+  Passed: 2  Failed: 1  Skipped: 0
+```
+
+### JSON
+
+JSON output is emitted via `click.echo()` to stdout. structlog logs go to stderr, ensuring that stdout contains only parseable JSON.
+
+```bash
+intake verify specs/my-spec/ -p . -f json
+```
+
+```json
+{
+  "spec_name": "my-spec",
+  "total_checks": 3,
+  "passed": 2,
+  "failed": 1,
+  "skipped": 0,
+  "all_required_passed": false,
+  "results": [
+    {
+      "id": "check-01",
+      "name": "Tests pasan",
+      "passed": true,
+      "required": true,
+      "output": "3 passed in 1.2s",
+      "duration_ms": 1200
+    }
+  ]
+}
+```
+
+### JUnit XML
+
+```bash
+intake verify specs/my-spec/ -p . -f junit > test-results.xml
+```
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<testsuites>
+  <testsuite name="my-spec" tests="3" failures="1" skipped="0">
+    <testcase name="Tests pasan" classname="check-01" time="1.200"/>
+    <testcase name="Archivos existen" classname="check-02" time="0.001"/>
+    <testcase name="Auth presente" classname="check-03" time="0.100">
+      <failure message="Pattern 'auth_required' not found in src/routes.py"/>
+    </testcase>
+  </testsuite>
+</testsuites>
+```
+
+---
+
+## CI/CD Integration
+
+### GitHub Actions (official action)
+
+The simplest way to integrate verification into CI. The official action installs intake, runs verify, and uploads the report as an artifact:
+
+```yaml
+name: Verify Spec Compliance
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: Diego303/intake-cli/action@main
+        with:
+          spec-dir: specs/my-feature/
+          report-format: junit
+```
+
+See [CI/CD Integration](../ci-cd-integration/#official-intake-action-recommended) for the complete reference of inputs and outputs.
+
+### GitHub Actions (manual)
+
+If you prefer to configure the steps manually:
+
+```yaml
+name: Verify Spec Compliance
+on: [push, pull_request]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install intake
+        run: pip install intake-ai-cli
+
+      - name: Run acceptance checks
+        run: intake verify specs/my-feature/ -p . -f junit > test-results.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: test-results.xml
+```
+
+### verify.sh Script (via generic export)
+
+If you use the `generic` exporter, a standalone `verify.sh` is generated that does not require intake to be installed:
+
+```bash
+# Export
+intake export specs/my-feature/ -f generic -o output/
+
+# Run directly
+./output/verify.sh /path/to/project
+```
+
+---
+
+## Continuous Verification with Watch Mode
+
+To automatically re-run checks every time you change a file in the project:
+
+```bash
+intake watch specs/my-spec/ -p .
+```
+
+This monitors the project directory with `watchfiles` and re-runs the `acceptance.yaml` checks on each change. Useful during development to immediately see if the implementation meets the spec.
+
+```bash
+# Only checks with tag "tests"
+intake watch specs/my-spec/ -p . -t tests
+
+# Longer debounce (5 seconds)
+intake watch specs/my-spec/ -p . --debounce 5.0
+```
+
+Requires: `pip install "intake-ai-cli[watch]"`
+
+See [Watch Mode](../watch-mode/) for full documentation.
+
+---
+
+## Verification via MCP
+
+If you use the intake MCP server, AI agents can run verification programmatically with the `intake_verify` tool:
+
+```
+Tool: intake_verify
+Input: { "spec_name": "my-spec", "tags": ["tests"] }
+Output: "Verification: 3/4 passed\n[PASS] check-01: Tests pasan\n[FAIL] check-03: ..."
+```
+
+They can also use the `verify_and_fix` prompt for an automatic verify-fix-reverify cycle.
+
+See [MCP Server](../mcp-server/) for details.
+
+---
+
+## Exit Codes
+
+| Code | Meaning |
+|------|---------|
+| `0` | All **required** checks passed (optional ones may have failed) |
+| `1` | At least one **required** check failed |
+| `2` | Execution error (spec not found, invalid YAML, etc.) |

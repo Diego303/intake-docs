@@ -29,7 +29,7 @@ intake export <SPEC_DIR> -f <format> -o <output>
 
 ## Architect
 
-Generates a `pipeline.yaml` compatible with [architect](https://github.com/your-org/architect) and a copy of the spec files.
+Generates a `pipeline.yaml` compatible with [architect](https://diego303.github.io/architect-docs/) and a copy of the spec files.
 
 ```bash
 intake export specs/my-feature/ -f architect -o output/

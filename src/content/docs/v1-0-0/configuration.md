@@ -1,0 +1,511 @@
+---
+title: "Configuración"
+description: "Todas las opciones de .intake.yaml, presets y variables de entorno."
+order: 4
+icon: "M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6"
+---
+
+# Configuracion
+
+intake funciona sin configuracion — solo necesita una API key de LLM. Para personalizar el comportamiento, se usa un archivo `.intake.yaml` en la raiz del proyecto.
+
+---
+
+## Prioridad de carga
+
+La configuracion se carga por capas. Cada capa sobreescribe la anterior:
+
+```
+CLI flags  >  .intake.yaml  >  preset  >  defaults
+```
+
+1. **Defaults**: valores por defecto en el codigo
+2. **Preset**: si se usa `--preset`, aplica un conjunto predefinido
+3. **`.intake.yaml`**: archivo de configuracion del proyecto
+4. **CLI flags**: las opciones de linea de comandos siempre ganan
+
+---
+
+## Archivo .intake.yaml
+
+Crea un archivo `.intake.yaml` en la raiz de tu proyecto. Ejemplo completo:
+
+```yaml
+# Configuracion del modelo LLM
+llm:
+  model: claude-sonnet-4         # Cualquier modelo soportado por LiteLLM
+  api_key_env: ANTHROPIC_API_KEY  # Variable de entorno con la API key
+  max_cost_per_spec: 0.50         # Presupuesto maximo por spec (USD)
+  temperature: 0.2                # 0.0 = determinista, 1.0 = creativo
+  max_retries: 3                  # Reintentos en caso de fallo
+  timeout: 120                    # Timeout por llamada LLM (segundos)
+
+# Configuracion del proyecto
+project:
+  name: mi-proyecto               # Nombre (auto-detectado si vacio)
+  stack: []                       # Stack tecnologico (auto-detectado si vacio)
+  language: en                    # Idioma del contenido generado
+  conventions: {}                 # Convenciones personalizadas (key: value)
+
+# Configuracion de la spec
+spec:
+  output_dir: ./specs             # Donde guardar las specs generadas
+  requirements_format: ears       # ears | user-stories | bdd | free
+  design_depth: moderate          # minimal | moderate | detailed
+  task_granularity: medium        # coarse | medium | fine
+  include_sources: true           # Incluir trazabilidad de fuentes
+  version_specs: true             # Crear directorios versionados
+  generate_lock: true             # Generar spec.lock.yaml
+  risk_assessment: true           # Incluir evaluacion de riesgos
+  auto_mode: true                 # Auto-detectar quick/standard/enterprise
+
+# Configuracion de verificacion
+verification:
+  auto_generate_tests: true       # Generar checks de aceptacion
+  test_output_dir: ./tests/generated
+  checks: []                      # Checks personalizados adicionales
+  timeout_per_check: 120          # Timeout por check (segundos)
+
+# Configuracion de exportacion
+export:
+  default_format: generic         # architect | claude-code | cursor | kiro | copilot | generic
+  architect_include_guardrails: true
+  architect_pipeline_template: standard
+  claude_code_generate_claude_md: true
+
+# Conectores API directos
+connectors:
+  jira:
+    url: "https://company.atlassian.net"
+    auth_type: token              # token | oauth | api_key
+    token_env: JIRA_API_TOKEN     # Variable de entorno con el API token
+    email_env: JIRA_EMAIL         # Variable de entorno con el email
+    default_project: ""           # Proyecto por defecto (ej: "PROJ")
+    include_comments: true        # Incluir comentarios de issues
+    max_comments: 5               # Max comentarios por issue
+    fields:                       # Campos a recuperar
+      - summary
+      - description
+      - labels
+      - priority
+      - status
+      - issuelinks
+      - comment
+  confluence:
+    url: "https://company.atlassian.net/wiki"
+    auth_type: token              # token | oauth
+    token_env: CONFLUENCE_API_TOKEN
+    email_env: CONFLUENCE_EMAIL
+    default_space: ""             # Space por defecto (ej: "ENG")
+    include_child_pages: false    # Incluir paginas hijas
+    max_depth: 1                  # Profundidad maxima de paginas hijas
+  github:
+    token_env: GITHUB_TOKEN       # Variable de entorno con el PAT
+    default_repo: ""              # Repo por defecto (ej: "org/repo")
+  gitlab:
+    url: "https://gitlab.example.com"  # URL de la instancia GitLab
+    token_env: GITLAB_TOKEN            # Variable de entorno con el access token
+    auth_type: token                    # token | oauth
+    default_project: ""                 # Proyecto por defecto
+    include_comments: true              # Incluir discussion notes
+    include_merge_requests: false       # Incluir MRs vinculados
+    max_notes: 10                       # Max notas por issue
+    ssl_verify: true                    # Verificar certificados SSL
+
+# Feedback loop
+feedback:
+  auto_amend_spec: false          # Aplicar enmiendas automaticamente
+  max_suggestions: 10             # Max sugerencias por analisis
+  include_code_snippets: true     # Incluir codigo en sugerencias
+
+# Servidor MCP
+mcp:
+  specs_dir: ./specs            # Directorio base de specs
+  project_dir: .                # Directorio del proyecto para verificacion
+  transport: stdio              # stdio | sse
+  sse_port: 8080                # Puerto para transporte SSE
+
+# Modo watch
+watch:
+  debounce_seconds: 2.0         # Segundos de espera tras el ultimo cambio
+  ignore_patterns:              # Patrones glob a ignorar
+    - "*.pyc"
+    - "__pycache__"
+    - ".git"
+    - "node_modules"
+    - ".intake"
+
+# Validacion de specs
+validate:
+  strict: false                 # Modo estricto: warnings son errores
+  required_sections:            # Archivos requeridos
+    - requirements.md
+    - tasks.md
+    - acceptance.yaml
+
+# Estimacion de costos
+estimate:
+  tokens_per_word: 1.35         # Ratio tokens/palabra
+  prompt_overhead_tokens: 2000  # Overhead por llamada LLM
+  calls_per_mode:               # Llamadas LLM por modo
+    quick: 1
+    standard: 3
+    enterprise: 4
+
+# Templates personalizados
+templates:
+  user_dir: ".intake/templates"   # Directorio de templates del usuario
+  warn_on_override: true          # Warning al sobreescribir un template built-in
+
+# Seguridad
+security:
+  redact_patterns: []             # Patrones regex a redactar del output
+  redact_files:                   # Archivos a nunca incluir
+    - "*.env"
+    - "*.pem"
+    - "*.key"
+```
+
+---
+
+## Referencia completa de campos
+
+### Seccion `llm`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `model` | string | `claude-sonnet-4` | Modelo LLM. Cualquier modelo que [LiteLLM](https://docs.litellm.ai/docs/providers) soporte. |
+| `api_key_env` | string | `ANTHROPIC_API_KEY` | Nombre de la variable de entorno que contiene la API key. |
+| `max_cost_per_spec` | float | `0.50` | Presupuesto maximo por spec en USD. Si se excede, el analisis se detiene. |
+| `temperature` | float | `0.2` | Temperatura del modelo. Menor = mas determinista. |
+| `max_retries` | int | `3` | Numero de reintentos ante fallos del LLM. |
+| `timeout` | int | `120` | Timeout por llamada LLM en segundos. |
+
+**Modelos soportados:**
+
+| Proveedor | Ejemplos | Variable de entorno |
+|-----------|----------|---------------------|
+| Anthropic | `claude-sonnet-4`, `claude-opus-4`, `claude-haiku-4-5` | `ANTHROPIC_API_KEY` |
+| OpenAI | `gpt-4o`, `gpt-4`, `gpt-3.5-turbo` | `OPENAI_API_KEY` |
+| Google | `gemini/gemini-pro`, `gemini/gemini-flash` | `GEMINI_API_KEY` |
+| Local | `ollama/llama3`, `ollama/mistral` | (no necesita key) |
+
+### Seccion `project`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `name` | string | `""` | Nombre del proyecto. Si esta vacio, se genera desde la descripcion del `init`. |
+| `stack` | list[string] | `[]` | Stack tecnologico. Si esta vacio, se auto-detecta desde archivos del proyecto. |
+| `language` | string | `en` | Idioma para el contenido generado (ej: `en`, `es`, `fr`). |
+| `conventions` | dict | `{}` | Convenciones del proyecto como pares clave-valor. |
+
+La auto-deteccion del stack busca 28+ archivos marcadores en el directorio del proyecto:
+
+| Archivo | Stack detectado |
+|---------|----------------|
+| `package.json` | javascript, node |
+| `tsconfig.json` | typescript |
+| `pyproject.toml` | python |
+| `Cargo.toml` | rust |
+| `go.mod` | go |
+| `pom.xml` | java, maven |
+| `Dockerfile` | docker |
+| `next.config.js` | nextjs |
+| ... | ... |
+
+Ademas inspecciona el contenido de `pyproject.toml` y `package.json` para detectar frameworks (fastapi, django, react, vue, etc.).
+
+### Seccion `spec`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `output_dir` | string | `./specs` | Directorio de salida para las specs. |
+| `requirements_format` | string | `ears` | Formato de requisitos. Opciones: `ears`, `user-stories`, `bdd`, `free`. |
+| `design_depth` | string | `moderate` | Nivel de detalle del diseno. Opciones: `minimal`, `moderate`, `detailed`. |
+| `task_granularity` | string | `medium` | Granularidad de las tareas. Opciones: `coarse`, `medium`, `fine`. |
+| `include_sources` | bool | `true` | Incluir `sources.md` con trazabilidad requisito-fuente. |
+| `version_specs` | bool | `true` | Crear subdirectorios versionados para las specs. |
+| `generate_lock` | bool | `true` | Generar `spec.lock.yaml` con hashes y metadata. |
+| `risk_assessment` | bool | `true` | Ejecutar evaluacion de riesgos (fase adicional del LLM). |
+| `auto_mode` | bool | `true` | Auto-detectar modo de generacion (quick/standard/enterprise) basado en la complejidad de las fuentes. Se ignora si se usa `--mode` en la CLI. |
+
+**Modos de generacion:**
+
+| Modo | Criterios de auto-deteccion | Archivos generados |
+|------|---------------------------|-------------------|
+| `quick` | <500 palabras, 1 fuente, sin estructura | `context.md` + `tasks.md` |
+| `standard` | Todo lo que no es quick ni enterprise | Los 6 archivos spec completos |
+| `enterprise` | 4+ fuentes O >5000 palabras | Los 6 archivos + riesgos detallados |
+
+**Formatos de requisitos:**
+
+| Formato | Descripcion | Mejor para |
+|---------|-------------|-----------|
+| `ears` | Easy Approach to Requirements Syntax. Formato estructurado con condiciones. | Especificaciones formales |
+| `user-stories` | "Como [rol], quiero [accion] para [beneficio]". | Equipos agiles |
+| `bdd` | Given/When/Then. Behavior-driven development. | Tests de aceptacion |
+| `free` | Formato libre. Sin estructura impuesta. | Prototipos rapidos |
+
+**Niveles de diseno:**
+
+| Nivel | Descripcion |
+|-------|-------------|
+| `minimal` | Solo componentes principales y decisiones criticas. |
+| `moderate` | Componentes, archivos, decisiones tecnicas y dependencias. |
+| `detailed` | Todo lo anterior mas diagramas de interaccion, edge cases, consideraciones de performance. |
+
+**Granularidad de tareas:**
+
+| Nivel | Descripcion |
+|-------|-------------|
+| `coarse` | Tareas grandes, pocas. Cada tarea cubre un componente completo. |
+| `medium` | Balance entre granularidad y cantidad. |
+| `fine` | Tareas pequenas y atomicas. Cada tarea es ~15-30 minutos de trabajo. |
+
+### Seccion `verification`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `auto_generate_tests` | bool | `true` | Generar checks de aceptacion automaticamente desde los requisitos. |
+| `test_output_dir` | string | `./tests/generated` | Directorio para tests generados. |
+| `checks` | list[string] | `[]` | Checks personalizados adicionales. |
+| `timeout_per_check` | int | `120` | Timeout maximo por check individual en segundos. |
+
+### Seccion `export`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `default_format` | string | `generic` | Formato de exportacion por defecto. Opciones: `architect`, `claude-code`, `cursor`, `kiro`, `copilot`, `generic`. |
+| `architect_include_guardrails` | bool | `true` | Incluir guardrails en pipelines de architect. |
+| `architect_pipeline_template` | string | `standard` | Template de pipeline para architect. |
+| `claude_code_generate_claude_md` | bool | `true` | Generar CLAUDE.md al exportar para Claude Code. |
+| `claude_code_task_dir` | string | `.intake/tasks` | Directorio para archivos de tarea de Claude Code. |
+| `cursor_rules_dir` | string | `.cursor/rules` | Directorio para reglas de Cursor. |
+
+### Seccion `connectors`
+
+Configuracion para conectores API directos. Permiten usar URIs como `jira://PROJ-123` directamente en `-s`. Ver [Conectores](../connectors/) para detalles de uso.
+
+**Jira:**
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `jira.url` | string | `""` | URL base de la instancia Jira. Requerido para usar `jira://`. |
+| `jira.auth_type` | string | `"token"` | Tipo de autenticacion: `token`, `oauth`, `api_key`. |
+| `jira.token_env` | string | `"JIRA_API_TOKEN"` | Variable de entorno con el API token. |
+| `jira.email_env` | string | `"JIRA_EMAIL"` | Variable de entorno con el email de autenticacion. |
+| `jira.default_project` | string | `""` | Proyecto por defecto. |
+| `jira.include_comments` | bool | `true` | Incluir comentarios de issues. |
+| `jira.max_comments` | int | `5` | Maximo de comentarios por issue. |
+| `jira.fields` | list[string] | ver ejemplo | Campos de Jira a recuperar. |
+
+**Confluence:**
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `confluence.url` | string | `""` | URL base de la instancia Confluence. Requerido para usar `confluence://`. |
+| `confluence.auth_type` | string | `"token"` | Tipo de autenticacion: `token`, `oauth`. |
+| `confluence.token_env` | string | `"CONFLUENCE_API_TOKEN"` | Variable de entorno con el API token. |
+| `confluence.email_env` | string | `"CONFLUENCE_EMAIL"` | Variable de entorno con el email. |
+| `confluence.default_space` | string | `""` | Space por defecto. |
+| `confluence.include_child_pages` | bool | `false` | Incluir paginas hijas recursivamente. |
+| `confluence.max_depth` | int | `1` | Profundidad maxima de paginas hijas. |
+
+**GitHub:**
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `github.token_env` | string | `"GITHUB_TOKEN"` | Variable de entorno con el Personal Access Token. |
+| `github.default_repo` | string | `""` | Repositorio por defecto (ej: `org/repo`). |
+
+**GitLab:**
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `gitlab.url` | string | `"https://gitlab.com"` | URL de la instancia GitLab. Requerido para usar `gitlab://`. |
+| `gitlab.token_env` | string | `"GITLAB_TOKEN"` | Variable de entorno con el Personal Access Token. |
+| `gitlab.auth_type` | string | `"token"` | Tipo de autenticacion: `token`, `oauth`. |
+| `gitlab.default_project` | string | `""` | Proyecto por defecto (ej: `group/project`). |
+| `gitlab.include_comments` | bool | `true` | Incluir discussion notes en los issues. |
+| `gitlab.include_merge_requests` | bool | `false` | Incluir merge requests vinculados a los issues. |
+| `gitlab.max_notes` | int | `10` | Maximo de notas por issue. |
+| `gitlab.ssl_verify` | bool | `true` | Verificar certificados SSL. Deshabilitar para instancias con certificados auto-firmados. |
+
+### Seccion `feedback`
+
+Configuracion del feedback loop. Ver [Feedback](../feedback/) para detalles.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `feedback.auto_amend_spec` | bool | `false` | Aplicar enmiendas a la spec automaticamente tras el analisis. |
+| `feedback.max_suggestions` | int | `10` | Maximo de sugerencias a generar por analisis. |
+| `feedback.include_code_snippets` | bool | `true` | Incluir fragmentos de codigo en las sugerencias. |
+
+### Seccion `mcp`
+
+Configuracion del servidor MCP (Model Context Protocol). Ver [MCP Server](../mcp-server/) para detalles completos.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `mcp.specs_dir` | string | `"./specs"` | Directorio base donde estan las specs. |
+| `mcp.project_dir` | string | `"."` | Directorio del proyecto para verificacion. |
+| `mcp.transport` | string | `"stdio"` | Transporte del servidor: `stdio` (local) o `sse` (HTTP). |
+| `mcp.sse_port` | int | `8080` | Puerto para el transporte SSE. |
+
+**Nota:** El servidor MCP requiere el paquete `mcp`. Instalar con: `pip install "intake-ai-cli[mcp]"`. El transporte SSE requiere ademas `starlette` y `uvicorn`.
+
+### Seccion `watch`
+
+Configuracion del modo watch para re-verificacion automatica. Ver [Watch Mode](../watch-mode/) para detalles completos.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `watch.debounce_seconds` | float | `2.0` | Tiempo de espera tras el ultimo cambio de archivo antes de re-verificar. |
+| `watch.ignore_patterns` | list[string] | `["*.pyc", "__pycache__", ".git", "node_modules", ".intake"]` | Patrones glob de archivos/directorios a ignorar. Se comparan contra cada componente del path. |
+
+**Nota:** El modo watch requiere el paquete `watchfiles`. Instalar con: `pip install "intake-ai-cli[watch]"`.
+
+### Seccion `validate`
+
+Configuracion de la validacion interna de specs (quality gate). Ver [Guia CLI > validate](../cli-guide/#intake-validate) para detalles de uso.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `validate.strict` | bool | `false` | Modo estricto: los warnings se convierten en errores. |
+| `validate.required_sections` | list[string] | `["requirements.md", "tasks.md", "acceptance.yaml"]` | Archivos requeridos en la spec. |
+| `validate.max_orphaned_requirements` | int | `0` | Maximo de requisitos huerfanos (sin tarea) permitidos sin advertencia. |
+
+### Seccion `estimate`
+
+Configuracion de la estimacion de costos LLM. Ver [Guia CLI > estimate](../cli-guide/#intake-estimate) para detalles de uso.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `estimate.tokens_per_word` | float | `1.35` | Ratio de tokens por palabra para estimar tokens de entrada. |
+| `estimate.prompt_overhead_tokens` | int | `2000` | Tokens adicionales por llamada LLM (system prompt, formato, etc.). |
+| `estimate.calls_per_mode` | dict | `{"quick": 1, "standard": 3, "enterprise": 4}` | Numero de llamadas LLM por modo de generacion. |
+
+### Seccion `templates`
+
+Configuracion de templates Jinja2 con soporte de overrides por proyecto. Los usuarios pueden sobreescribir cualquier template built-in colocando un archivo con el mismo nombre en el directorio configurado.
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `templates.user_dir` | string | `".intake/templates"` | Directorio relativo al proyecto donde buscar templates personalizados. |
+| `templates.warn_on_override` | bool | `true` | Log de warning cuando un template built-in es sobreescrito por uno del usuario. |
+
+### Seccion `security`
+
+| Campo | Tipo | Default | Descripcion |
+|-------|------|---------|-------------|
+| `redact_patterns` | list[string] | `[]` | Patrones regex que se eliminaran del contenido generado. |
+| `redact_files` | list[string] | `["*.env", "*.pem", "*.key"]` | Patrones glob de archivos que nunca se incluiran. |
+
+---
+
+## Presets
+
+Los presets son configuraciones predefinidas para casos de uso comunes. Se aplican con `--preset`:
+
+```bash
+intake init "Mi feature" -s reqs.md --preset minimal
+```
+
+### Comparativa
+
+| Campo | `minimal` | `standard` | `enterprise` |
+|-------|-----------|------------|--------------|
+| **Caso de uso** | Prototipo rapido | Equipos normales | Regulado / critico |
+| `max_cost_per_spec` | $0.10 | $0.50 | $2.00 |
+| `temperature` | 0.3 | 0.2 | 0.1 |
+| `requirements_format` | `free` | `ears` | `ears` |
+| `design_depth` | `minimal` | `moderate` | `detailed` |
+| `task_granularity` | `coarse` | `medium` | `fine` |
+| `include_sources` | false | true | true |
+| `risk_assessment` | false | true | true |
+| `generate_lock` | false | true | true |
+
+### Cuando usar cada preset
+
+- **`minimal`**: Prototipado rapido, ideas exploratorias, un solo desarrollador. Costo bajo, output minimo.
+- **`standard`**: La opcion por defecto. Buen balance entre detalle y costo para equipos de 2-5 personas.
+- **`enterprise`**: Para equipos grandes, proyectos regulados, o cuando se necesita trazabilidad completa y evaluacion de riesgos exhaustiva.
+
+---
+
+## Variables de entorno
+
+### Proveedores LLM
+
+| Variable | Proveedor | Ejemplo |
+|----------|-----------|---------|
+| `ANTHROPIC_API_KEY` | Anthropic (Claude) | `sk-ant-api03-...` |
+| `OPENAI_API_KEY` | OpenAI (GPT) | `sk-...` |
+
+```bash
+# Anthropic
+export ANTHROPIC_API_KEY=sk-ant-api03-tu-key-aqui
+
+# OpenAI
+export OPENAI_API_KEY=sk-tu-key-aqui
+```
+
+Si usas un proveedor diferente, configura `llm.api_key_env` en `.intake.yaml`:
+
+```yaml
+llm:
+  model: gemini/gemini-pro
+  api_key_env: GEMINI_API_KEY
+```
+
+### Conectores API
+
+| Variable | Conector | Proposito |
+|----------|----------|-----------|
+| `JIRA_API_TOKEN` | Jira | API token de Atlassian |
+| `JIRA_EMAIL` | Jira | Email de autenticacion |
+| `CONFLUENCE_API_TOKEN` | Confluence | API token de Atlassian |
+| `CONFLUENCE_EMAIL` | Confluence | Email de autenticacion |
+| `GITHUB_TOKEN` | GitHub | Personal Access Token |
+| `GITLAB_TOKEN` | GitLab | Personal Access Token (scope: `read_api`) |
+
+```bash
+# Jira / Confluence
+export JIRA_API_TOKEN=tu-api-token
+export JIRA_EMAIL=dev@company.com
+export CONFLUENCE_API_TOKEN=tu-api-token
+export CONFLUENCE_EMAIL=dev@company.com
+
+# GitHub
+export GITHUB_TOKEN=ghp_tu-personal-access-token
+
+# GitLab
+export GITLAB_TOKEN=glpat-tu-personal-access-token
+```
+
+Los nombres de las variables son configurables via `connectors.*.token_env` y `connectors.*.email_env` en `.intake.yaml`.
+
+---
+
+## Generar config automaticamente
+
+Si no tienes `.intake.yaml`, intake usa defaults sensatos. Para crear un archivo de configuracion basico:
+
+```bash
+intake doctor --fix
+```
+
+Esto crea un `.intake.yaml` minimo que puedes personalizar:
+
+```yaml
+# intake configuration
+llm:
+  model: claude-sonnet-4
+  # max_cost_per_spec: 0.50
+project:
+  name: ""
+  language: en
+  # stack: []
+spec:
+  output_dir: ./specs
+```

@@ -37,7 +37,7 @@ intake doctor
 Para desarrollo local:
 
 ```bash
-git clone https://github.com/your-org/intake-cli.git
+git clone https://github.com/Diego303/intake-cli.git
 cd intake-cli
 pip install -e ".[dev]"
 ```
