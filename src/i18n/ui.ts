@@ -67,7 +67,9 @@ export const ui = {
       btnDocs: 'Documentación',
     },
     footer: {
-      copyright: '© 2026 Intake Project. Creado con Claude Code.',
+      copyright: '© 2026 Intake',
+      oss: 'OSS Ecosystem Project',
+      madeWith: 'Creado con Claude Code.',
       tagline: 'Puente universal entre humanos e IA.',
     },
     docsHub: {
@@ -150,7 +152,9 @@ export const ui = {
       btnDocs: 'Documentation',
     },
     footer: {
-      copyright: '© 2026 Intake Project. Built with Claude Code.',
+      copyright: '© 2026 Intake',
+      oss: 'OSS Ecosystem Project',
+      madeWith: 'Built with Claude Code.',
       tagline: 'Universal bridge between humans and AI.',
     },
     docsHub: {
