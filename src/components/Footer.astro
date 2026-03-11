@@ -11,12 +11,21 @@ const { lang } = Astro.props;
 
 <footer class="footer">
   <div class="footer-inner">
-    <div class="footer-copyright">
-      {t('footer.copyright', lang)}
+    <div class="footer-left">
+      <span class="footer-copyright">{t('footer.copyright', lang)}</span>
+      <span class="footer-separator">|</span>
+      <a
+        href="https://diego303.github.io/oss-ecosystem-project/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="footer-oss"
+      >
+        {t('footer.oss', lang)}
+      </a>
     </div>
 
-    <div class="footer-tagline">
-      {t('footer.tagline', lang)}
+    <div class="footer-right">
+      <span class="footer-made">{t('footer.madeWith', lang)}</span>
     </div>
   </div>
 </footer>
@@ -40,6 +49,14 @@ const { lang } = Astro.props;
     text-align: center;
   }
 
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .footer-copyright {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 700;
@@ -48,7 +65,33 @@ const { lang } = Astro.props;
     color: #71717a;
   }
 
-  .footer-tagline {
+  .footer-separator {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #3f3f46;
+  }
+
+  .footer-oss {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #71717a;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0s;
+  }
+
+  .footer-oss:hover {
+    color: var(--ink-white, #ededed);
+  }
+
+  .footer-right {
+    display: flex;
+    align-items: center;
+  }
+
+  .footer-made {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.75rem;
     font-weight: 500;
@@ -61,6 +104,10 @@ const { lang } = Astro.props;
     .footer-inner {
       flex-direction: row;
       justify-content: space-between;
+    }
+
+    .footer-left {
+      justify-content: flex-start;
     }
   }
 </style>
